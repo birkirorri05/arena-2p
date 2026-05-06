@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useRoom } from "@/hooks/useRoom";
 import { useSocket } from "@/hooks/useSocket";

@@ -28,25 +28,30 @@ function inBounds(r: number, c: number) {
   return r >= 0 && r < SIZE && c >= 0 && c < SIZE;
 }
 
-// Recursively find all multi-jump chains; adds each chain as one Move.
-function findJumps(
-  board: Board,
-  origin: Pos,
-  r: number,
-  c: number,
-  captured: Pos[],
-  results: Move[]
-) {
-  const piece = board[origin[0]][origin[1]]!;
-  const dirs =
-    piece.king ? [[-1,-1],[-1,1],[1,-1],[1,1]]
+type PieceObj = { color: Color; king: boolean };
+
+function pieceDirs(piece: PieceObj): number[][] {
+  return piece.king
+    ? [[-1,-1],[-1,1],[1,-1],[1,1]]
     : piece.color === "r" ? [[-1,-1],[-1,1]]
     : [[1,-1],[1,1]];
+}
 
+// Recursively find all terminal landing squares for multi-jump chains.
+// Returns true if at least one further jump was found (used to determine
+// whether to record this position as a terminal landing).
+function findJumps(
+  board: Board,
+  piece: PieceObj,       // passed explicitly — never re-read from board
+  origin: Pos,           // original square (for Move.from)
+  r: number, c: number,  // current square
+  captured: Pos[],
+  results: Move[]
+): boolean {
   let extended = false;
-  for (const [dr, dc] of dirs) {
-    const mr = r + dr;  const mc = c + dc;
-    const lr = r + dr * 2; const lc = c + dc * 2;
+  for (const [dr, dc] of pieceDirs(piece)) {
+    const mr = r + dr, mc = c + dc;   // square being captured
+    const lr = r + dr * 2, lc = c + dc * 2; // landing square
     if (!inBounds(lr, lc)) continue;
     const mid = board[mr]?.[mc];
     if (!mid || mid.color === piece.color) continue;
@@ -54,23 +59,28 @@ function findJumps(
     if (captured.some(([pr, pc]) => pr === mr && pc === mc)) continue;
 
     extended = true;
-    // Simulate jump on a temporary board for further chaining
+    const newCaptures: Pos[] = [...captured, [mr, mc]];
+
+    // Simulate the jump; clear current square (not origin) so recursive
+    // calls see the correct board state.
     const tmp: Board = board.map((row) => row.map((p) => (p ? { ...p } : null)));
-    tmp[lr][lc] = tmp[origin[0]][origin[1]];
+    const landed: PieceObj = {
+      ...piece,
+      king: piece.king
+        || (piece.color === "r" && lr === 0)
+        || (piece.color === "b" && lr === SIZE - 1),
+    };
+    tmp[lr][lc] = landed;
     tmp[mr][mc] = null;
-    tmp[origin[0]][origin[1]] = null;
+    tmp[r][c] = null; // ← clear current pos, not origin
 
-    findJumps(tmp, origin, lr, lc, [...captured, [mr, mc]], results);
+    const wentFurther = findJumps(tmp, landed, origin, lr, lc, newCaptures, results);
+    if (!wentFurther) {
+      // Terminal — no further jumps from landing square
+      results.push({ from: origin, to: [lr, lc], captures: newCaptures });
+    }
   }
-
-  // Record this chain as a valid landing if at least one capture occurred
-  if (captured.length > 0 && !extended) {
-    results.push({ from: origin, to: [r, c], captures: captured });
-  }
-  // Also record every intermediate stop (player may land here)
-  if (captured.length > 0 && extended) {
-    results.push({ from: origin, to: [r, c], captures: captured });
-  }
+  return extended;
 }
 
 function getMoves(board: Board, row: number, col: number): Move[] {
@@ -78,17 +88,13 @@ function getMoves(board: Board, row: number, col: number): Move[] {
   if (!piece) return [];
 
   const jumps: Move[] = [];
-  findJumps(board, [row, col], row, col, [], jumps);
+  findJumps(board, piece, [row, col], row, col, [], jumps);
   if (jumps.length > 0) return jumps;
 
   // Non-capture steps
-  const dirs =
-    piece.king ? [[-1,-1],[-1,1],[1,-1],[1,1]]
-    : piece.color === "r" ? [[-1,-1],[-1,1]]
-    : [[1,-1],[1,1]];
   const steps: Move[] = [];
-  for (const [dr, dc] of dirs) {
-    const nr = row + dr; const nc = col + dc;
+  for (const [dr, dc] of pieceDirs(piece)) {
+    const nr = row + dr, nc = col + dc;
     if (inBounds(nr, nc) && !board[nr][nc])
       steps.push({ from: [row, col], to: [nr, nc], captures: [] });
   }

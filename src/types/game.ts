@@ -22,6 +22,10 @@ export interface GameMeta {
   tags: GameTag[];
   /** Relative path to the game's board/canvas component */
   component: string;
+  /** Emoji shown on the game card */
+  logo: string;
+  /** Tailwind gradient classes for the card banner, e.g. "from-blue-600 to-indigo-700" */
+  color: string;
 }
 
 export type GameTag =

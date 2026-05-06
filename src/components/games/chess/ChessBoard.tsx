@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import type { CSSProperties } from "react";
 import { Chess } from "chess.js";
 import { getSocket } from "@/lib/socket/client";
 import { useGameStore } from "@/store/gameStore";
@@ -11,11 +12,21 @@ type Square = string; // e.g. "e4"
 type PieceSymbol = "p" | "n" | "b" | "r" | "q" | "k";
 type Color = "w" | "b";
 
-// Use filled (solid) glyphs for both colors — the "white" set (♔…♙) are
-// hollow outlines and look transparent. Styling filled glyphs white with a
-// dark stroke gives a clear, solid piece on any square color.
+// Filled glyphs for both colors.
 const PIECE_GLYPH: Record<PieceSymbol, string> = {
   k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟",
+};
+
+// text-shadow outline: always renders behind the glyph fill, so white pieces
+// stay white regardless of browser support for paint-order / WebkitTextStroke.
+const OUTLINE = "-1px -1px 0 #1a1a1a, 1px -1px 0 #1a1a1a, -1px 1px 0 #1a1a1a, 1px 1px 0 #1a1a1a";
+const WHITE_PIECE_STYLE: CSSProperties = {
+  color: "#ffffff",
+  textShadow: `${OUTLINE}, 0 2px 6px rgba(0,0,0,0.4)`,
+};
+const BLACK_PIECE_STYLE: CSSProperties = {
+  color: "#1a1a1a",
+  textShadow: "0 1px 3px rgba(0,0,0,0.35)",
 };
 
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -199,11 +210,7 @@ export default function ChessBoard({ room }: Props) {
                     {piece && (
                       <span
                         className="select-none leading-none text-[42px]"
-                        style={
-                          piece.color === "w"
-                            ? { color: "#fff", WebkitTextStroke: "2px #1a1a1a", paintOrder: "stroke fill", textShadow: "0 2px 5px rgba(0,0,0,0.45)" }
-                            : { color: "#1a1a1a", WebkitTextStroke: "1px rgba(255,255,255,0.5)", paintOrder: "stroke fill", textShadow: "0 2px 4px rgba(0,0,0,0.3)" }
-                        }
+                        style={piece.color === "w" ? WHITE_PIECE_STYLE : BLACK_PIECE_STYLE}
                       >
                         {PIECE_GLYPH[piece.type]}
                       </span>
@@ -235,11 +242,7 @@ export default function ChessBoard({ room }: Props) {
             >
               <span
                 className="text-[36px] leading-none select-none"
-                style={
-                  myColor === "w"
-                    ? { color: "#fff", WebkitTextStroke: "2px #1a1a1a", paintOrder: "stroke fill", textShadow: "0 2px 5px rgba(0,0,0,0.45)" }
-                    : { color: "#1a1a1a", WebkitTextStroke: "1px rgba(255,255,255,0.5)", paintOrder: "stroke fill" }
-                }
+                style={myColor === "w" ? WHITE_PIECE_STYLE : BLACK_PIECE_STYLE}
               >
                 {PIECE_GLYPH[p]}
               </span>

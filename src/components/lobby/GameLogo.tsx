@@ -1,5 +1,6 @@
 // SVG illustrations for each game card.
-// viewBox="0 0 80 56", preserveAspectRatio="slice" so they fill the square card.
+// viewBox="0 -12 80 80" — 80×80 square viewBox that centers the 56-tall artwork,
+// so the SVG fills a square container perfectly with the default meet behaviour.
 
 import type { ReactElement } from "react";
 
@@ -20,12 +21,12 @@ export function GameLogo({ id }: { id: string }) {
 
 const W = "rgba(255,255,255,0.90)";
 const D = "rgba(255,255,255,0.18)";
-const SVG = "w-full h-full";
-const PAR = "xMidYMid slice";
+const VB = "0 -12 80 80";
+const CLS = "w-full h-full";
 
 function ChessLogo() {
   return (
-    <svg viewBox="0 0 80 56" className={SVG} preserveAspectRatio={PAR}>
+    <svg viewBox={VB} className={CLS}>
       {[0,1,2,3].flatMap(r => [0,1,2,3].map(c =>
         (r+c)%2===0
           ? <rect key={`b${r}${c}`} x={4+c*10} y={4+r*10} width={10} height={10} fill={D}/>
@@ -48,7 +49,7 @@ function ScrabbleLogo() {
     { x: 60, letter: "A", pts: 1 },
   ];
   return (
-    <svg viewBox="0 0 80 56" className={SVG} preserveAspectRatio={PAR}>
+    <svg viewBox={VB} className={CLS}>
       {tiles.map(({ x, letter, pts }) => (
         <g key={letter}>
           <rect x={x} y={12} width={17} height={17} rx={2} fill={W}/>
@@ -56,7 +57,7 @@ function ScrabbleLogo() {
           <text x={x+14} y={27} textAnchor="middle" fontSize={5} fill="#a16207">{pts}</text>
         </g>
       ))}
-      {[{ x:15, letter:"B", pts:3 }, { x:33, letter:"L", pts:1 }, { x:51, letter:"E", pts:1 }].map(({ x, letter }) => (
+      {[{ x:15, letter:"B" }, { x:33, letter:"L" }, { x:51, letter:"E" }].map(({ x, letter }) => (
         <g key={`b${letter}`}>
           <rect x={x} y={32} width={17} height={17} rx={2} fill={W} opacity={0.6}/>
           <text x={x+8.5} y={45} textAnchor="middle" fontSize={11} fontWeight="bold" fill="#78350f" fontFamily="serif" opacity={0.6}>{letter}</text>
@@ -69,7 +70,7 @@ function ScrabbleLogo() {
 function BackgammonLogo() {
   const pts = [4,14,24,34,44,54];
   return (
-    <svg viewBox="0 0 80 56" className={SVG} preserveAspectRatio={PAR}>
+    <svg viewBox={VB} className={CLS}>
       <rect x={2} y={2} width={76} height={52} rx={2} fill="none" stroke={W} strokeWidth={1.5} opacity={0.4}/>
       {pts.map((x, i) => (
         <polygon key={`t${i}`} points={`${x+1},3 ${x+9},3 ${x+5},24`} fill={i%2===0 ? W : D} opacity={i%2===0 ? 0.85 : 0.5}/>
@@ -92,7 +93,7 @@ function GoLogo() {
     [0,2,"w"],[2,2,"b"],[4,1,"w"],[2,4,"b"],[4,4,"w"],
   ] as const;
   return (
-    <svg viewBox="0 0 80 56" className={SVG} preserveAspectRatio={PAR}>
+    <svg viewBox={VB} className={CLS}>
       {Array.from({length:5}, (_,i) => (
         <g key={i}>
           <line x1={offset} y1={offset+i*spacing} x2={offset+4*spacing} y2={offset+i*spacing} stroke={W} strokeWidth={0.8} opacity={0.4}/>
@@ -109,7 +110,7 @@ function GoLogo() {
 
 function CheckersLogo() {
   return (
-    <svg viewBox="0 0 80 56" className={SVG} preserveAspectRatio={PAR}>
+    <svg viewBox={VB} className={CLS}>
       {[0,1,2,3].flatMap(r => [0,1,2,3,4].map(c =>
         (r+c)%2===1
           ? <rect key={`${r}${c}`} x={8+c*13} y={6+r*13} width={13} height={13} fill={D}/>
@@ -133,7 +134,7 @@ function Connect4Logo() {
     [1,2,1,2,1,2,0],
   ];
   return (
-    <svg viewBox="0 0 80 56" className={SVG} preserveAspectRatio={PAR}>
+    <svg viewBox={VB} className={CLS}>
       <rect x={2} y={4} width={76} height={50} rx={4} fill="rgba(30,64,175,0.5)" stroke={W} strokeWidth={1.5} opacity={0.6}/>
       {Array.from({length:4}, (_,r) =>
         Array.from({length:7}, (_,c) => {
@@ -151,7 +152,7 @@ function Connect4Logo() {
 
 function TicTacToeLogo() {
   return (
-    <svg viewBox="0 0 80 56" className={SVG} preserveAspectRatio={PAR}>
+    <svg viewBox={VB} className={CLS}>
       <line x1={26} y1={4}  x2={26} y2={52} stroke={W} strokeWidth={2.5} opacity={0.7}/>
       <line x1={54} y1={4}  x2={54} y2={52} stroke={W} strokeWidth={2.5} opacity={0.7}/>
       <line x1={4}  y1={22} x2={76} y2={22} stroke={W} strokeWidth={2.5} opacity={0.7}/>
@@ -167,7 +168,7 @@ function TicTacToeLogo() {
 
 function ReversiLogo() {
   return (
-    <svg viewBox="0 0 80 56" className={SVG} preserveAspectRatio={PAR}>
+    <svg viewBox={VB} className={CLS}>
       <rect x={8} y={4} width={64} height={48} rx={2} fill="rgba(21,128,61,0.5)" stroke={W} strokeWidth={1} opacity={0.7}/>
       {[24,40,56].map(x => <line key={x} x1={x} y1={4}  x2={x} y2={52} stroke={W} strokeWidth={0.8} opacity={0.3}/>)}
       {[20,36,52].map(y => <line key={y} x1={8} y1={y}  x2={72} y2={y} stroke={W} strokeWidth={0.8} opacity={0.3}/>)}
@@ -184,7 +185,7 @@ function ReversiLogo() {
 function MancalaLogo() {
   const pits = [14, 26, 38, 50, 62, 74];
   return (
-    <svg viewBox="0 0 80 56" className={SVG} preserveAspectRatio={PAR}>
+    <svg viewBox={VB} className={CLS}>
       <rect x={2}  y={10} width={12} height={36} rx={6} fill={W} opacity={0.75}/>
       <rect x={66} y={10} width={12} height={36} rx={6} fill={W} opacity={0.75}/>
       <rect x={14} y={14} width={52} height={28} rx={3} fill={W} opacity={0.15}/>

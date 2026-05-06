@@ -211,7 +211,7 @@ export default function GoBoard({ room }: Props) {
   }, [room.id, myId]);
 
   const handlePlace = useCallback((x: number, y: number) => {
-    if (!myTurn || gs.passes >= 2) return;
+    if (room.status !== "playing" || !myTurn || gs.passes >= 2) return;
     const color: Color = stateRef.current.blackNext ? "B" : "W";
     const result = placeStone(stateRef.current.grid, x, y, color, stateRef.current.prevKey);
     if (!result) return;
@@ -223,7 +223,7 @@ export default function GoBoard({ room }: Props) {
   }, [myTurn, gs.passes, emitMove]);
 
   const handlePass = useCallback(() => {
-    if (!myTurn || gs.passes >= 2) return;
+    if (room.status !== "playing" || !myTurn || gs.passes >= 2) return;
     const payload: MovePayload = { type: "pass" };
     const newState = applyPayload(stateRef.current, payload);
     stateRef.current = newState;

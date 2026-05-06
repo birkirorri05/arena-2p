@@ -119,7 +119,7 @@ export default function MancalaBoard({ room }: Props) {
   }, [gameOver, display, room.hostId, room.guestId]);
 
   const handleClick = useCallback((pit: number) => {
-    if (!validPits.includes(pit)) return;
+    if (room.status !== "playing" || !validPits.includes(pit)) return;
     const { board: next, extraTurn } = applyMove(board, pit);
     const nextP1Turn = extraTurn ? p1Turn : !p1Turn;
     setBoard(next);

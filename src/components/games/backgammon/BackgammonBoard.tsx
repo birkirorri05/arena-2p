@@ -213,7 +213,7 @@ export default function BackgammonBoard({ room }: Props) {
   }, [room.id, myId]);
 
   const handleRoll = () => {
-    if (!myTurn || gs.phase !== "roll") return;
+    if (room.status !== "playing" || !myTurn || gs.phase !== "roll") return;
     const d1 = Math.ceil(Math.random() * 6);
     const d2 = Math.ceil(Math.random() * 6);
     const payload: Mv = { t: "roll", d1, d2 };
@@ -222,7 +222,7 @@ export default function BackgammonBoard({ room }: Props) {
   };
 
   const handleMove = (to: number | "off") => {
-    if (!myTurn || sel === null) return;
+    if (room.status !== "playing" || !myTurn || sel === null) return;
     const payload: Mv = { t: "move", from: sel, to };
     const next = applyMv(sRef.current, payload);
     if (next === sRef.current) return;
@@ -230,7 +230,7 @@ export default function BackgammonBoard({ room }: Props) {
   };
 
   const handleSelect = (from: number | "bar") => {
-    if (!myTurn || gs.phase !== "move") return;
+    if (room.status !== "playing" || !myTurn || gs.phase !== "move") return;
     if (from === "bar") { if (!gs.bar[gs.turn]) return; }
     else if (gs.pts[from as number]?.col !== gs.turn) return;
     setSel(p => p === from ? null : from);

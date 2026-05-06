@@ -73,7 +73,7 @@ export default function TicTacToeBoard({ room }: Props) {
 
   const handleClick = useCallback(
     (idx: number) => {
-      if (!isMyTurn || board[idx] || winner) return;
+      if (room.status !== "playing" || !isMyTurn || board[idx] || winner) return;
       const next = [...board];
       next[idx] = myMark;
       setBoard(next);

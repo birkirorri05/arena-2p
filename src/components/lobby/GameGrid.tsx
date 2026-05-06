@@ -5,42 +5,31 @@ import { GAMES } from "@/lib/games/registry";
 import { GameCard } from "./GameCard";
 import type { GameTag } from "@/types/game";
 
-const ALL_TAGS: GameTag[] = ["board", "card", "strategy", "action", "classic", "fighting", "arcade"];
+const ALL_TAGS: GameTag[] = ["board", "strategy", "classic", "card", "action", "fighting", "arcade"];
 
 export function GameGrid() {
   const [activeTag, setActiveTag] = useState<GameTag | null>(null);
-
   const filtered = activeTag ? GAMES.filter((g) => g.tags.includes(activeTag)) : GAMES;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => setActiveTag(null)}
-          className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
-            !activeTag
-              ? "border-arena-accent bg-arena-accent text-white"
-              : "border-arena-border bg-white text-arena-text-muted hover:border-arena-accent hover:text-arena-accent"
-          }`}
-        >
-          All
-        </button>
-        {ALL_TAGS.map((tag) => (
+        {([null, ...ALL_TAGS] as const).map((tag) => (
           <button
-            key={tag}
-            onClick={() => setActiveTag(tag === activeTag ? null : tag)}
-            className={`rounded-full border px-4 py-1.5 text-sm font-medium capitalize transition-colors ${
+            key={tag ?? "all"}
+            onClick={() => setActiveTag(tag)}
+            className={`rounded-md px-3.5 py-1 text-sm font-medium capitalize transition-colors ${
               activeTag === tag
-                ? "border-arena-accent bg-arena-accent text-white"
-                : "border-arena-border bg-white text-arena-text-muted hover:border-arena-accent hover:text-arena-accent"
+                ? "bg-arena-accent text-white"
+                : "bg-arena-surface text-arena-text-muted hover:text-arena-text"
             }`}
           >
-            {tag}
+            {tag ?? "All games"}
           </button>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {filtered.map((game) => (
           <GameCard key={game.id} game={game} />
         ))}

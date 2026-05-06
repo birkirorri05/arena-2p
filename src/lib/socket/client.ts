@@ -10,7 +10,6 @@ export function getSocket(): AppSocket {
     socket = io({
       path: "/socket.io",
       autoConnect: false,
-      transports: ["websocket"],
     });
   }
   return socket;

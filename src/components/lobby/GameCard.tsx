@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { GameLogo } from "./GameLogo";
 import type { GameMeta } from "@/types/game";
 
 const TAG_COLORS: Record<string, string> = {
@@ -18,9 +19,9 @@ export function GameCard({ game }: { game: GameMeta }) {
       href={`/games/${game.id}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-arena-border bg-arena-surface transition-all hover:border-white/20 hover:shadow-xl hover:shadow-black/30 hover:-translate-y-0.5"
     >
-      {/* Coloured banner with logo */}
-      <div className="flex h-24 items-center justify-center" style={{ background: game.color }}>
-        <span className="text-5xl drop-shadow-lg select-none">{game.logo}</span>
+      {/* Coloured banner with SVG illustration */}
+      <div className="h-24 overflow-hidden" style={{ background: game.color }}>
+        <GameLogo id={game.id} />
       </div>
 
       {/* Card body */}

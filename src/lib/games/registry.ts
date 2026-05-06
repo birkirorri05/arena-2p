@@ -9,7 +9,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 30,
     tags: ["board", "strategy", "classic"],
     component: "chess/ChessBoard",
-    logo: "♟️", color: g("#334155", "#0f172a"),
+    color: g("#334155", "#0f172a"),
   },
   scrabble: {
     id: "scrabble", name: "Scrabble",
@@ -17,7 +17,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 45,
     tags: ["board", "classic"],
     component: "scrabble/ScrabbleBoard",
-    logo: "🔤", color: g("#b45309", "#78350f"),
+    color: g("#b45309", "#78350f"),
   },
   backgammon: {
     id: "backgammon", name: "Backgammon",
@@ -25,7 +25,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 20,
     tags: ["board", "classic", "strategy"],
     component: "backgammon/BackgammonBoard",
-    logo: "🎲", color: g("#92400e", "#451a03"),
+    color: g("#92400e", "#451a03"),
   },
   go: {
     id: "go", name: "Go",
@@ -33,39 +33,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 60,
     tags: ["board", "strategy", "classic"],
     component: "go/GoBoard",
-    logo: "⚫", color: g("#44403c", "#1c1917"),
-  },
-  battleship: {
-    id: "battleship", name: "Battleship",
-    description: "Hidden fleets, deadly salvos. Sink them all.",
-    minPlayers: 2, maxPlayers: 2, estimatedMinutes: 15,
-    tags: ["board", "classic"],
-    component: "battleship/BattleshipBoard",
-    logo: "🚢", color: g("#1e40af", "#0c1a4b"),
-  },
-  uno: {
-    id: "uno", name: "Uno",
-    description: "Play cards, draw penalties, shout UNO!",
-    minPlayers: 2, maxPlayers: 2, estimatedMinutes: 15,
-    tags: ["card", "classic"],
-    component: "uno/UnoGame",
-    logo: "🃏", color: g("#dc2626", "#c2410c"),
-  },
-  pong: {
-    id: "pong", name: "Pong",
-    description: "The original arcade classic. First to 7 wins.",
-    minPlayers: 2, maxPlayers: 2, estimatedMinutes: 5,
-    tags: ["arcade", "classic"],
-    component: "pong/PongCanvas",
-    logo: "🏓", color: g("#0e7490", "#134e4a"),
-  },
-  streetfighter: {
-    id: "streetfighter", name: "Street Fighter",
-    description: "Choose your fighter. Land combos. Win the round.",
-    minPlayers: 2, maxPlayers: 2, estimatedMinutes: 5,
-    tags: ["fighting", "action"],
-    component: "streetfighter/FightCanvas",
-    logo: "👊", color: g("#b91c1c", "#881337"),
+    color: g("#44403c", "#1c1917"),
   },
   checkers: {
     id: "checkers", name: "Checkers",
@@ -73,7 +41,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 20,
     tags: ["board", "classic", "strategy"],
     component: "checkers/CheckersBoard",
-    logo: "🔴", color: g("#991b1b", "#450a0a"),
+    color: g("#991b1b", "#450a0a"),
   },
   connect4: {
     id: "connect4", name: "Connect 4",
@@ -81,7 +49,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 10,
     tags: ["board", "classic"],
     component: "connect4/Connect4Board",
-    logo: "🔵", color: g("#1d4ed8", "#312e81"),
+    color: g("#1d4ed8", "#312e81"),
   },
   tictactoe: {
     id: "tictactoe", name: "Tic Tac Toe",
@@ -89,7 +57,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 2,
     tags: ["board", "classic"],
     component: "tictactoe/TicTacToeBoard",
-    logo: "✖️", color: g("#7c3aed", "#4c1d95"),
+    color: g("#7c3aed", "#4c1d95"),
   },
   reversi: {
     id: "reversi", name: "Reversi",
@@ -97,7 +65,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 20,
     tags: ["board", "strategy", "classic"],
     component: "reversi/ReversiBoard",
-    logo: "🟢", color: g("#15803d", "#14532d"),
+    color: g("#15803d", "#14532d"),
   },
   mancala: {
     id: "mancala", name: "Mancala",
@@ -105,7 +73,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 15,
     tags: ["board", "classic", "strategy"],
     component: "mancala/MancalaBoard",
-    logo: "🪨", color: g("#92400e", "#3b1a08"),
+    color: g("#92400e", "#3b1a08"),
   },
 };
 

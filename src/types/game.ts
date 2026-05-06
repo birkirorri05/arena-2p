@@ -3,10 +3,6 @@ export type GameId =
   | "scrabble"
   | "backgammon"
   | "go"
-  | "battleship"
-  | "uno"
-  | "pong"
-  | "streetfighter"
   | "checkers"
   | "connect4"
   | "tictactoe"
@@ -23,8 +19,6 @@ export interface GameMeta {
   tags: GameTag[];
   /** Relative path to the game's board/canvas component */
   component: string;
-  /** Emoji shown on the game card */
-  logo: string;
   /** CSS gradient for the card banner, e.g. "linear-gradient(135deg,#1e3a5f,#0f172a)" */
   color: string;
 }

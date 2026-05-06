@@ -27,11 +27,15 @@ export const useGameStore = create<GameState>((set) => ({
   myPlayerName: "",
 
   setRoom: (room) =>
-    set((state) => ({
-      room,
-      // Clear finished-game state when a rematch starts
-      ...(state.result && room.status === "playing" ? { result: null, moves: [] } : {}),
-    })),
+    set((state) => {
+      const isNewRoom = state.room?.id !== room.id;
+      const isRematch = !!state.result && room.status === "playing";
+      return {
+        room,
+        // Clear moves/result when entering a new room or starting a rematch
+        ...(isNewRoom || isRematch ? { result: null, moves: [] } : {}),
+      };
+    }),
   setPlayers: (players) => set({ players }),
   addMove: (move) => set((s) => ({ moves: [...s.moves, move] })),
   setResult: (result) => set({ result }),

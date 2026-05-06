@@ -109,17 +109,20 @@ export default function ReversiBoard({ room }: Props) {
   useEffect(() => {
     const pending = moves.slice(appliedRef.current);
     if (pending.length === 0) return;
+    let anyPass = false;
     setBoard((prev) => {
       let next = prev;
       for (const move of pending) {
-        const { row, col, color } = move.payload as { row: number; col: number; color: Color };
-        if (row === -1) continue; // pass move — board unchanged
-        next = applyMove(next, row, col, color);
+        const p = move.payload as { row?: number; col?: number; color?: Color };
+        // Skip moves with an invalid payload (e.g. stale moves from another game)
+        if (typeof p?.row !== "number" || typeof p?.col !== "number" || !p?.color) continue;
+        if (p.row === -1) { anyPass = true; continue; }
+        next = applyMove(next, p.row, p.col, p.color);
       }
       return next;
     });
     if (pending.length % 2 !== 0) setBlackNext((p) => !p);
-    setPassed(false);
+    setPassed(anyPass);
     appliedRef.current = moves.length;
   }, [moves]);
 

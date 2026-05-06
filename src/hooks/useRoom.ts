@@ -11,22 +11,28 @@ export function useRoom() {
   const createRoom = useCallback(
     (gameId: GameId): Promise<string> =>
       new Promise((resolve, reject) => {
-        getSocket().emit("room:create", gameId, (newRoom) => {
-          if (!newRoom) return reject(new Error("Failed to create room"));
-          useGameStore.getState().setRoom(newRoom);
-          resolve(newRoom.id);
-        });
+        getSocket()
+          .timeout(8000)
+          .emit("room:create", gameId, (err, newRoom) => {
+            if (err) return reject(new Error("Could not reach the game server. Is it running?"));
+            if (!newRoom) return reject(new Error("Failed to create room"));
+            useGameStore.getState().setRoom(newRoom);
+            resolve(newRoom.id);
+          });
       }),
     []
   );
 
   const joinRoom = useCallback(
     (roomId: string): Promise<boolean> =>
-      new Promise((resolve) => {
-        getSocket().emit("room:join", roomId, (joined) => {
-          if (joined) useGameStore.getState().setRoom(joined);
-          resolve(!!joined);
-        });
+      new Promise((resolve, reject) => {
+        getSocket()
+          .timeout(8000)
+          .emit("room:join", roomId, (err, joined) => {
+            if (err) return reject(new Error("Could not reach the game server. Is it running?"));
+            if (joined) useGameStore.getState().setRoom(joined);
+            resolve(!!joined);
+          });
       }),
     []
   );

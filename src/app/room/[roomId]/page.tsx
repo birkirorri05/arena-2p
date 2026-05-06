@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRoom } from "@/hooks/useRoom";
 import { useSocket } from "@/hooks/useSocket";
+import { useGameStore } from "@/store/gameStore";
 import { GameBoard } from "@/components/game/GameBoard";
 import { GameOverlay } from "@/components/game/GameOverlay";
 
@@ -16,7 +17,7 @@ export default function RoomPage() {
     if (roomId && !room) {
       // Reconnect to a room when page is (re)loaded
       socket.emit("room:join", roomId, (joined) => {
-        if (joined) useRoom.toString(); // store updates via socket listener
+        if (joined) useGameStore.getState().setRoom(joined);
       });
     }
   }, [roomId, room, socket]);

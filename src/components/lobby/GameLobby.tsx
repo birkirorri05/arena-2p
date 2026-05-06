@@ -19,6 +19,7 @@ export function GameLobby({ game }: GameLobbyProps) {
   const router = useRouter();
   const [joinCode, setJoinCode] = useState("");
   const [loading, setLoading] = useState<"create" | "join" | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const { setMyPlayer } = useGameStore();
   const { createRoom, joinRoom } = useRoom();
@@ -46,10 +47,13 @@ export function GameLobby({ game }: GameLobbyProps) {
 
   async function handleCreate() {
     setLoading("create");
+    setError(null);
     ensurePlayer();
     try {
       const roomId = await createRoom(game.id);
       router.push(`/room/${roomId}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {
       setLoading(null);
     }
@@ -58,10 +62,14 @@ export function GameLobby({ game }: GameLobbyProps) {
   async function handleJoin() {
     if (!joinCode.trim()) return;
     setLoading("join");
+    setError(null);
     ensurePlayer();
     try {
       const ok = await joinRoom(joinCode.trim());
       if (ok) router.push(`/room/${joinCode.trim()}`);
+      else setError("Room not found or already full.");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {
       setLoading(null);
     }
@@ -82,6 +90,7 @@ export function GameLobby({ game }: GameLobbyProps) {
         <Button className="w-full" onClick={handleCreate} disabled={!!loading}>
           {loading === "create" ? "Creating…" : "Create room"}
         </Button>
+        {error && <p className="text-sm text-red-400">{error}</p>}
       </Card>
 
       <Card className="space-y-4">

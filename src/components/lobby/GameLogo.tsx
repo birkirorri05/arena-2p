@@ -1,6 +1,4 @@
-// SVG illustrations for each game card.
-// viewBox="0 -12 80 80" — 80×80 square viewBox that centers the 56-tall artwork,
-// so the SVG fills a square container perfectly with the default meet behaviour.
+// SVG game card illustrations — all native 80×80, content fills ~85% of the square.
 
 import type { ReactElement } from "react";
 
@@ -19,180 +17,267 @@ export function GameLogo({ id }: { id: string }) {
   return map[id] ?? null;
 }
 
-const W = "rgba(255,255,255,0.90)";
-const D = "rgba(255,255,255,0.18)";
-const VB = "0 -12 80 80";
+const W  = "rgba(255,255,255,0.92)";
+const D  = "rgba(255,255,255,0.18)";
 const CLS = "w-full h-full";
+const VB  = "0 0 80 80";
 
+// ── Chess: king piece centered ─────────────────────────────────────────────
 function ChessLogo() {
   return (
     <svg viewBox={VB} className={CLS}>
-      {[0,1,2,3].flatMap(r => [0,1,2,3].map(c =>
-        (r+c)%2===0
-          ? <rect key={`b${r}${c}`} x={4+c*10} y={4+r*10} width={10} height={10} fill={D}/>
-          : null
-      ))}
-      <rect x={52} y={44} width={22} height={5} rx={2.5} fill={W}/>
-      <path d="M54 44 L56 26 L63 34 L66 20 L69 34 L74 26 L74 44 Z" fill={W}/>
-      <circle cx={60} cy={19} r={2.5} fill={W}/>
-      <circle cx={66} cy={17} r={2.5} fill={W}/>
-      <circle cx={72} cy={19} r={2.5} fill={W}/>
+      {/* Diagonal board squares */}
+      <rect x={0}  y={0}  width={40} height={40} fill={D}/>
+      <rect x={40} y={40} width={40} height={40} fill={D}/>
+      {/* Cross */}
+      <rect x={37} y={5}  width={6} height={18} rx={2.5} fill={W}/>
+      <rect x={29} y={10} width={22} height={7} rx={2.5} fill={W}/>
+      {/* Crown collar */}
+      <rect x={26} y={23} width={28} height={7}  rx={2} fill={W}/>
+      {/* Body — shoulders widen toward base */}
+      <path d="M29,30 Q22,43 23,55 L57,55 Q58,43 51,30 Z" fill={W}/>
+      {/* Base plates */}
+      <rect x={17} y={55} width={46} height={8}  rx={3} fill={W}/>
+      <rect x={12} y={63} width={56} height={9}  rx={4} fill={W}/>
     </svg>
   );
 }
 
+// ── Scrabble: 2×2 tile grid spelling "WORD" ────────────────────────────────
 function ScrabbleLogo() {
   const tiles = [
-    { x: 6,  letter: "S", pts: 1 },
-    { x: 24, letter: "C", pts: 3 },
-    { x: 42, letter: "R", pts: 1 },
-    { x: 60, letter: "A", pts: 1 },
+    { x: 7,  y: 7,  letter: "W", pts: 4 },
+    { x: 43, y: 7,  letter: "O", pts: 1 },
+    { x: 7,  y: 43, letter: "R", pts: 1 },
+    { x: 43, y: 43, letter: "D", pts: 2 },
   ];
   return (
     <svg viewBox={VB} className={CLS}>
-      {tiles.map(({ x, letter, pts }) => (
+      {tiles.map(({ x, y, letter, pts }) => (
         <g key={letter}>
-          <rect x={x} y={12} width={17} height={17} rx={2} fill={W}/>
-          <text x={x+8.5} y={25} textAnchor="middle" fontSize={11} fontWeight="bold" fill="#78350f" fontFamily="serif">{letter}</text>
-          <text x={x+14} y={27} textAnchor="middle" fontSize={5} fill="#a16207">{pts}</text>
-        </g>
-      ))}
-      {[{ x:15, letter:"B" }, { x:33, letter:"L" }, { x:51, letter:"E" }].map(({ x, letter }) => (
-        <g key={`b${letter}`}>
-          <rect x={x} y={32} width={17} height={17} rx={2} fill={W} opacity={0.6}/>
-          <text x={x+8.5} y={45} textAnchor="middle" fontSize={11} fontWeight="bold" fill="#78350f" fontFamily="serif" opacity={0.6}>{letter}</text>
+          <rect x={x} y={y} width={32} height={32} rx={3} fill={W}/>
+          <text x={x+16} y={y+23} textAnchor="middle" fontSize={17} fontWeight="bold"
+            fill="#78350f" fontFamily="serif">{letter}</text>
+          <text x={x+27} y={y+30} textAnchor="middle" fontSize={8}
+            fill="#a16207">{pts}</text>
         </g>
       ))}
     </svg>
   );
 }
 
+// ── Backgammon: 4 triangles top + 4 bottom with pieces ────────────────────
 function BackgammonLogo() {
-  const pts = [4,14,24,34,44,54];
+  // 4 triangles symmetrically placed. Each 14px wide, gap 6px, margins 3px.
+  // xs = left edge of each triangle: 3, 23, 43, 63
+  const xs = [3, 23, 43, 63];
+  const tw = 14;
   return (
     <svg viewBox={VB} className={CLS}>
-      <rect x={2} y={2} width={76} height={52} rx={2} fill="none" stroke={W} strokeWidth={1.5} opacity={0.4}/>
-      {pts.map((x, i) => (
-        <polygon key={`t${i}`} points={`${x+1},3 ${x+9},3 ${x+5},24`} fill={i%2===0 ? W : D} opacity={i%2===0 ? 0.85 : 0.5}/>
+      <rect x={2} y={2} width={76} height={76} rx={4} fill="none" stroke={W} strokeWidth={1.5} opacity={0.35}/>
+      {/* Top triangles pointing down to y=42 */}
+      {xs.map((x, i) => (
+        <polygon key={`t${i}`}
+          points={`${x},4 ${x+tw},4 ${x+tw/2},42`}
+          fill={i%2===0 ? W : D}
+        />
       ))}
-      {pts.map((x, i) => (
-        <polygon key={`b${i}`} points={`${x+1},53 ${x+9},53 ${x+5},32`} fill={i%2===0 ? D : W} opacity={i%2===0 ? 0.5 : 0.85}/>
+      {/* Bottom triangles pointing up to y=38 */}
+      {xs.map((x, i) => (
+        <polygon key={`b${i}`}
+          points={`${x},76 ${x+tw},76 ${x+tw/2},38`}
+          fill={i%2===0 ? D : W}
+        />
       ))}
-      <circle cx={8}  cy={27} r={4} fill={W}/>
-      <circle cx={18} cy={27} r={4} fill={W}/>
-      <circle cx={62} cy={27} r={4} fill={D} stroke={W} strokeWidth={1}/>
-      <circle cx={72} cy={27} r={4} fill={D} stroke={W} strokeWidth={1}/>
+      {/* Checker pieces in center */}
+      {[10, 30, 50, 70].map((cx, i) => (
+        <circle key={i} cx={cx} cy={40} r={6}
+          fill={i%2===0 ? W : "rgba(20,20,20,0.85)"}
+          stroke={W} strokeWidth={1}/>
+      ))}
     </svg>
   );
 }
 
+// ── Go: 5×5 grid with black and white stones ──────────────────────────────
 function GoLogo() {
-  const spacing = 13, offset = 10;
-  const stones = [
-    [1,1,"b"],[2,0,"w"],[3,2,"b"],[1,3,"w"],[3,3,"b"],
-    [0,2,"w"],[2,2,"b"],[4,1,"w"],[2,4,"b"],[4,4,"w"],
-  ] as const;
+  const step = 16, start = 8;  // grid: x/y 8..72, 5 lines
+  const black: [number,number][] = [[1,0],[2,1],[0,2],[3,2],[1,4],[4,3]];
+  const white: [number,number][] = [[0,0],[3,1],[2,3],[4,1],[0,4],[2,4]];
+  // Placed so neither color dominates visually and stones are spread evenly
   return (
     <svg viewBox={VB} className={CLS}>
+      {/* Grid */}
       {Array.from({length:5}, (_,i) => (
         <g key={i}>
-          <line x1={offset} y1={offset+i*spacing} x2={offset+4*spacing} y2={offset+i*spacing} stroke={W} strokeWidth={0.8} opacity={0.4}/>
-          <line x1={offset+i*spacing} y1={offset} x2={offset+i*spacing} y2={offset+4*spacing} stroke={W} strokeWidth={0.8} opacity={0.4}/>
+          <line x1={start} y1={start+i*step} x2={start+4*step} y2={start+i*step}
+            stroke={W} strokeWidth={1} opacity={0.55}/>
+          <line x1={start+i*step} y1={start} x2={start+i*step} y2={start+4*step}
+            stroke={W} strokeWidth={1} opacity={0.55}/>
         </g>
       ))}
-      {stones.map(([c,r,color], i) => (
-        <circle key={i} cx={offset+c*spacing} cy={offset+r*spacing} r={5}
-          fill={color==="b" ? "rgba(0,0,0,0.85)" : W} stroke={W} strokeWidth={0.8}/>
+      {/* Star points */}
+      {[[1,1],[3,1],[1,3],[3,3]].map(([c,r]) => (
+        <circle key={`h${c}${r}`} cx={start+c*step} cy={start+r*step} r={2.5}
+          fill={W} opacity={0.55}/>
+      ))}
+      {/* Black stones */}
+      {black.map(([c,r],i) => (
+        <circle key={`b${i}`} cx={start+c*step} cy={start+r*step} r={7}
+          fill="rgba(10,10,10,0.90)" stroke={W} strokeWidth={1.2}/>
+      ))}
+      {/* White stones */}
+      {white.map(([c,r],i) => (
+        <circle key={`w${i}`} cx={start+c*step} cy={start+r*step} r={7}
+          fill={W} stroke="rgba(255,255,255,0.5)" strokeWidth={1}/>
       ))}
     </svg>
   );
 }
 
+// ── Checkers: 4×4 board with red and dark pieces ──────────────────────────
 function CheckersLogo() {
+  const sq = 18, start = 4;   // board: 4..76 × 4..76 (72×72)
+  const half = sq / 2;
   return (
     <svg viewBox={VB} className={CLS}>
-      {[0,1,2,3].flatMap(r => [0,1,2,3,4].map(c =>
-        (r+c)%2===1
-          ? <rect key={`${r}${c}`} x={8+c*13} y={6+r*13} width={13} height={13} fill={D}/>
-          : null
-      ))}
-      <circle cx={21}   cy={12.5} r={5} fill="rgba(239,68,68,0.9)"  stroke={W} strokeWidth={1}/>
-      <circle cx={47}   cy={12.5} r={5} fill="rgba(239,68,68,0.9)"  stroke={W} strokeWidth={1}/>
-      <circle cx={34}   cy={25.5} r={5} fill="rgba(239,68,68,0.9)"  stroke={W} strokeWidth={1}/>
-      <circle cx={27.5} cy={38.5} r={5} fill="rgba(30,30,30,0.85)"  stroke={W} strokeWidth={1}/>
-      <circle cx={53.5} cy={38.5} r={5} fill="rgba(30,30,30,0.85)"  stroke={W} strokeWidth={1}/>
-      <circle cx={40.5} cy={51.5} r={5} fill="rgba(30,30,30,0.85)"  stroke={W} strokeWidth={1}/>
+      {/* Board squares */}
+      {Array.from({length:4}, (_,r) =>
+        Array.from({length:4}, (_,c) =>
+          (r+c)%2===1
+            ? <rect key={`${r}${c}`} x={start+c*sq} y={start+r*sq} width={sq} height={sq} fill={D}/>
+            : null
+        )
+      )}
+      <rect x={start} y={start} width={4*sq} height={4*sq} fill="none" stroke={W} strokeWidth={1.5} opacity={0.4}/>
+      {/* Red pieces — rows 0-1, dark squares */}
+      {[0,1].flatMap(r => [0,1,2,3].filter(c=>(r+c)%2===1).map(c => (
+        <g key={`r${r}${c}`}>
+          <circle cx={start+c*sq+half} cy={start+r*sq+half} r={7}
+            fill="rgba(220,38,38,0.90)" stroke={W} strokeWidth={1.5}/>
+          <circle cx={start+c*sq+half} cy={start+r*sq+half} r={3.5}
+            fill="none" stroke={W} strokeWidth={1} opacity={0.5}/>
+        </g>
+      )))}
+      {/* Dark pieces — rows 2-3, dark squares */}
+      {[2,3].flatMap(r => [0,1,2,3].filter(c=>(r+c)%2===1).map(c => (
+        <g key={`d${r}${c}`}>
+          <circle cx={start+c*sq+half} cy={start+r*sq+half} r={7}
+            fill="rgba(15,15,15,0.88)" stroke={W} strokeWidth={1.5}/>
+          <circle cx={start+c*sq+half} cy={start+r*sq+half} r={3.5}
+            fill="none" stroke={W} strokeWidth={1} opacity={0.4}/>
+        </g>
+      )))}
     </svg>
   );
 }
 
+// ── Connect 4: 6×5 grid centered ─────────────────────────────────────────
 function Connect4Logo() {
-  const colors = [
-    [0,0,0,0,0,0,0],
-    [0,0,1,0,2,0,0],
-    [0,1,2,1,2,0,0],
-    [1,2,1,2,1,2,0],
+  const cols = 6, rows = 5, cs = 12;
+  const sx = 4, sy = 10;   // grid: x 4..76, y 10..70 → centred at (40,40)
+  const state = [
+    [0,0,0,0,0,0],
+    [0,0,0,0,0,0],
+    [0,0,1,0,2,0],
+    [0,1,2,1,2,0],
+    [1,2,1,2,1,2],
   ];
   return (
     <svg viewBox={VB} className={CLS}>
-      <rect x={2} y={4} width={76} height={50} rx={4} fill="rgba(30,64,175,0.5)" stroke={W} strokeWidth={1.5} opacity={0.6}/>
-      {Array.from({length:4}, (_,r) =>
-        Array.from({length:7}, (_,c) => {
-          const v = colors[r]?.[c] ?? 0;
-          return (
-            <circle key={`${r}${c}`} cx={13+c*10} cy={14+r*10} r={4}
-              fill={v===1 ? "rgba(239,68,68,0.95)" : v===2 ? "rgba(250,204,21,0.95)" : "rgba(0,0,80,0.6)"}
-              stroke="rgba(255,255,255,0.2)" strokeWidth={0.5}/>
-          );
-        })
+      <rect x={sx-2} y={sy-2} width={cols*cs+4} height={rows*cs+4} rx={5}
+        fill="rgba(30,64,175,0.55)" stroke={W} strokeWidth={1.5} opacity={0.7}/>
+      {state.map((row,r) =>
+        row.map((v,c) => (
+          <circle key={`${r}${c}`}
+            cx={sx+c*cs+cs/2} cy={sy+r*cs+cs/2} r={4.5}
+            fill={v===1 ? "rgba(239,68,68,0.95)" : v===2 ? "rgba(250,204,21,0.95)" : "rgba(0,0,50,0.5)"}
+            stroke="rgba(255,255,255,0.15)" strokeWidth={0.5}/>
+        ))
       )}
     </svg>
   );
 }
 
+// ── Tic Tac Toe: large grid filling the square ────────────────────────────
 function TicTacToeLogo() {
+  const lw = 4;
   return (
     <svg viewBox={VB} className={CLS}>
-      <line x1={26} y1={4}  x2={26} y2={52} stroke={W} strokeWidth={2.5} opacity={0.7}/>
-      <line x1={54} y1={4}  x2={54} y2={52} stroke={W} strokeWidth={2.5} opacity={0.7}/>
-      <line x1={4}  y1={22} x2={76} y2={22} stroke={W} strokeWidth={2.5} opacity={0.7}/>
-      <line x1={4}  y1={40} x2={76} y2={40} stroke={W} strokeWidth={2.5} opacity={0.7}/>
-      <line x1={9}  y1={9}  x2={21} y2={18} stroke={W} strokeWidth={3} strokeLinecap="round"/>
-      <line x1={21} y1={9}  x2={9}  y2={18} stroke={W} strokeWidth={3} strokeLinecap="round"/>
-      <circle cx={40} cy={31} r={7} stroke={W} strokeWidth={3} fill="none"/>
-      <line x1={59} y1={43} x2={71} y2={51} stroke={W} strokeWidth={3} strokeLinecap="round" opacity={0.7}/>
-      <line x1={71} y1={43} x2={59} y2={51} stroke={W} strokeWidth={3} strokeLinecap="round" opacity={0.7}/>
+      {/* Grid — lines at 1/3 and 2/3 of 80 */}
+      <line x1={27} y1={5}  x2={27} y2={75} stroke={W} strokeWidth={lw} strokeLinecap="round" opacity={0.85}/>
+      <line x1={53} y1={5}  x2={53} y2={75} stroke={W} strokeWidth={lw} strokeLinecap="round" opacity={0.85}/>
+      <line x1={5}  y1={27} x2={75} y2={27} stroke={W} strokeWidth={lw} strokeLinecap="round" opacity={0.85}/>
+      <line x1={5}  y1={53} x2={75} y2={53} stroke={W} strokeWidth={lw} strokeLinecap="round" opacity={0.85}/>
+      {/* X — top-left cell (centre 14,14) */}
+      <line x1={6}  y1={6}  x2={22} y2={22} stroke={W} strokeWidth={lw} strokeLinecap="round"/>
+      <line x1={22} y1={6}  x2={6}  y2={22} stroke={W} strokeWidth={lw} strokeLinecap="round"/>
+      {/* O — centre cell (centre 40,40) */}
+      <circle cx={40} cy={40} r={10} stroke={W} strokeWidth={lw} fill="none"/>
+      {/* X — bottom-right cell (centre 66,66) */}
+      <line x1={58} y1={58} x2={74} y2={74} stroke={W} strokeWidth={lw} strokeLinecap="round" opacity={0.7}/>
+      <line x1={74} y1={58} x2={58} y2={74} stroke={W} strokeWidth={lw} strokeLinecap="round" opacity={0.7}/>
+      {/* O — top-right cell (centre 66,14) */}
+      <circle cx={66} cy={14} r={8}  stroke={W} strokeWidth={lw} fill="none" opacity={0.6}/>
     </svg>
   );
 }
 
+// ── Reversi: 4×4 board with alternating discs ────────────────────────────
 function ReversiLogo() {
+  const sq = 18, start = 4;   // board: 4..76 × 4..76
+  const half = sq / 2;
   return (
     <svg viewBox={VB} className={CLS}>
-      <rect x={8} y={4} width={64} height={48} rx={2} fill="rgba(21,128,61,0.5)" stroke={W} strokeWidth={1} opacity={0.7}/>
-      {[24,40,56].map(x => <line key={x} x1={x} y1={4}  x2={x} y2={52} stroke={W} strokeWidth={0.8} opacity={0.3}/>)}
-      {[20,36,52].map(y => <line key={y} x1={8} y1={y}  x2={72} y2={y} stroke={W} strokeWidth={0.8} opacity={0.3}/>)}
-      <circle cx={32} cy={24} r={9} fill="rgba(240,240,240,0.95)" stroke={W} strokeWidth={0.5}/>
-      <circle cx={48} cy={24} r={9} fill="rgba(10,10,10,0.85)"    stroke={W} strokeWidth={0.5}/>
-      <circle cx={32} cy={40} r={9} fill="rgba(10,10,10,0.85)"    stroke={W} strokeWidth={0.5}/>
-      <circle cx={48} cy={40} r={9} fill="rgba(240,240,240,0.95)" stroke={W} strokeWidth={0.5}/>
-      <circle cx={16} cy={24} r={7} fill="rgba(240,240,240,0.3)"  stroke={W} strokeWidth={0.5}/>
-      <circle cx={64} cy={40} r={7} fill="rgba(10,10,10,0.3)"     stroke={W} strokeWidth={0.5}/>
+      <rect x={start} y={start} width={4*sq} height={4*sq} rx={3}
+        fill="rgba(21,128,61,0.40)" stroke={W} strokeWidth={1} opacity={0.6}/>
+      {[1,2,3].map(i => (
+        <g key={i}>
+          <line x1={start+i*sq} y1={start} x2={start+i*sq} y2={start+4*sq}
+            stroke={W} strokeWidth={0.8} opacity={0.3}/>
+          <line x1={start} y1={start+i*sq} x2={start+4*sq} y2={start+i*sq}
+            stroke={W} strokeWidth={0.8} opacity={0.3}/>
+        </g>
+      ))}
+      {Array.from({length:4}, (_,r) =>
+        Array.from({length:4}, (_,c) => (
+          <circle key={`${r}${c}`}
+            cx={start+c*sq+half} cy={start+r*sq+half} r={7}
+            fill={(r+c)%2===0 ? "rgba(240,240,240,0.92)" : "rgba(12,12,12,0.88)"}
+            stroke={W} strokeWidth={0.8}/>
+        ))
+      )}
     </svg>
   );
 }
 
+// ── Mancala: stores + 3 pits per row ─────────────────────────────────────
 function MancalaLogo() {
-  const pits = [14, 26, 38, 50, 62, 74];
+  const pitCx = [27, 40, 53];
   return (
     <svg viewBox={VB} className={CLS}>
-      <rect x={2}  y={10} width={12} height={36} rx={6} fill={W} opacity={0.75}/>
-      <rect x={66} y={10} width={12} height={36} rx={6} fill={W} opacity={0.75}/>
-      <rect x={14} y={14} width={52} height={28} rx={3} fill={W} opacity={0.15}/>
-      {pits.map((x, i) => <ellipse key={`t${i}`} cx={x-6} cy={22} rx={5} ry={5} fill={W} opacity={0.8}/>)}
-      {pits.map((x, i) => <ellipse key={`b${i}`} cx={x-6} cy={38} rx={5} ry={5} fill={W} opacity={0.8}/>)}
-      {[8, 20, 32].map(x => <circle key={x} cx={x} cy={22} r={1.5} fill="rgba(0,0,0,0.4)"/>)}
-      {[44, 56, 68].map(x => <circle key={x} cx={x} cy={38} r={1.5} fill="rgba(0,0,0,0.4)"/>)}
+      {/* Board */}
+      <rect x={3} y={11} width={74} height={58} rx={14}
+        fill={D} stroke={W} strokeWidth={1.5} opacity={0.4}/>
+      {/* Stores */}
+      <ellipse cx={11} cy={40} rx={6} ry={22} fill={W} opacity={0.85}/>
+      <ellipse cx={69} cy={40} rx={6} ry={22} fill={W} opacity={0.85}/>
+      {/* Top row pits */}
+      {pitCx.map((cx,i) => (
+        <circle key={`t${i}`} cx={cx} cy={27} r={8} fill={W} opacity={0.88}/>
+      ))}
+      {/* Bottom row pits */}
+      {pitCx.map((cx,i) => (
+        <circle key={`b${i}`} cx={cx} cy={53} r={8} fill={W} opacity={0.88}/>
+      ))}
+      {/* Seeds in alternating pits */}
+      {[[27,27],[40,53],[53,27]].map(([cx,cy],i) => (
+        <g key={i}>
+          <circle cx={cx-3} cy={cy-2} r={1.8} fill="rgba(0,0,0,0.35)"/>
+          <circle cx={cx+3} cy={cy-2} r={1.8} fill="rgba(0,0,0,0.35)"/>
+          <circle cx={cx}   cy={cy+3} r={1.8} fill="rgba(0,0,0,0.35)"/>
+        </g>
+      ))}
     </svg>
   );
 }

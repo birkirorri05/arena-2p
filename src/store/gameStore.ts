@@ -18,13 +18,23 @@ interface GameState {
   reset: () => void;
 }
 
+function loadPlayer(): { myPlayerId: string | null; myPlayerName: string } {
+  if (typeof window === "undefined") return { myPlayerId: null, myPlayerName: "" };
+  return {
+    myPlayerId: localStorage.getItem("arena_player_id"),
+    myPlayerName: localStorage.getItem("arena_player_name") ?? "",
+  };
+}
+
+const { myPlayerId: storedId, myPlayerName: storedName } = loadPlayer();
+
 export const useGameStore = create<GameState>((set) => ({
   room: null,
   players: [],
   moves: [],
   result: null,
-  myPlayerId: null,
-  myPlayerName: "",
+  myPlayerId: storedId,
+  myPlayerName: storedName,
 
   setRoom: (room) =>
     set((state) => {
@@ -32,14 +42,18 @@ export const useGameStore = create<GameState>((set) => ({
       const isRematch = !!state.result && room.status === "playing";
       return {
         room,
-        // Clear moves/result when entering a new room or starting a rematch
         ...(isNewRoom || isRematch ? { result: null, moves: [] } : {}),
       };
     }),
   setPlayers: (players) => set({ players }),
   addMove: (move) => set((s) => ({ moves: [...s.moves, move] })),
   setResult: (result) => set({ result }),
-  setMyPlayer: (id, name) => set({ myPlayerId: id, myPlayerName: name }),
-  reset: () =>
-    set({ room: null, players: [], moves: [], result: null }),
+  setMyPlayer: (id, name) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("arena_player_id", id);
+      localStorage.setItem("arena_player_name", name);
+    }
+    set({ myPlayerId: id, myPlayerName: name });
+  },
+  reset: () => set({ room: null, players: [], moves: [], result: null }),
 }));

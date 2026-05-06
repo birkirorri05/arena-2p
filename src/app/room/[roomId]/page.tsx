@@ -3,24 +3,22 @@
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRoom } from "@/hooks/useRoom";
-import { useSocket } from "@/hooks/useSocket";
 import { useGameStore } from "@/store/gameStore";
+import { getSocket } from "@/lib/socket/client";
 import { GameBoard } from "@/components/game/GameBoard";
 import { GameOverlay } from "@/components/game/GameOverlay";
 
+// Socket is connected globally by Providers — use getSocket() directly.
 export default function RoomPage() {
   const { roomId } = useParams<{ roomId: string }>();
-  const socket = useSocket();
   const { room, players, result, resign, rematch, leaveRoom } = useRoom();
 
   useEffect(() => {
-    if (roomId && !room) {
-      // Reconnect to a room when page is (re)loaded
-      socket.emit("room:join", roomId, (joined) => {
-        if (joined) useGameStore.getState().setRoom(joined);
-      });
-    }
-  }, [roomId, room, socket]);
+    if (!roomId || room) return;
+    getSocket().emit("room:join", roomId, (joined) => {
+      if (joined) useGameStore.getState().setRoom(joined);
+    });
+  }, [roomId, room]);
 
   if (!room) {
     return (

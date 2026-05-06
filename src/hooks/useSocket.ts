@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { connectSocket, disconnectSocket, getSocket } from "@/lib/socket/client";
+import { connectSocket, getSocket } from "@/lib/socket/client";
 import { useGameStore } from "@/store/gameStore";
 
 export function useSocket() {
@@ -26,7 +26,9 @@ export function useSocket() {
       socket.off("room:players", setPlayers);
       socket.off("game:move", addMove);
       socket.off("game:over", setResult);
-      disconnectSocket();
+      // Don't disconnect — socket must survive navigation from lobby → room.
+      // Disconnecting here causes the server to fire the disconnect handler,
+      // killing the room, and the new socket won't be in the server's room.
       connected.current = false;
     };
   }, [myPlayerId, myPlayerName, setRoom, setPlayers, addMove, setResult]);

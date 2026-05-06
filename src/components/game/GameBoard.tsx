@@ -32,14 +32,33 @@ export function GameBoard({ room, players, onResign }: GameBoardProps) {
   const GameComponent = GAME_COMPONENTS[room.gameId];
   const meta = GAME_REGISTRY[room.gameId];
 
+  function copyRoomId() {
+    navigator.clipboard.writeText(room.id);
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-arena-text">{meta.name}</h2>
-        <Button variant="danger" size="sm" onClick={onResign}>
-          Resign
-        </Button>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-arena-text-muted">Room</span>
+          <code className="rounded bg-arena-bg px-2 py-1 font-mono text-sm text-arena-text">
+            {room.id}
+          </code>
+          <Button variant="ghost" size="sm" onClick={copyRoomId}>
+            Copy
+          </Button>
+          <Button variant="danger" size="sm" onClick={onResign}>
+            Resign
+          </Button>
+        </div>
       </div>
+
+      {room.status === "waiting" && (
+        <p className="text-center text-sm text-arena-text-muted">
+          Waiting for opponent — share the room code above to invite them.
+        </p>
+      )}
 
       <PlayerBar players={players} />
 

@@ -19,10 +19,7 @@ export function GameCard({ game }: { game: GameMeta }) {
       className="group flex flex-col overflow-hidden rounded-xl border border-arena-border bg-arena-surface transition-all hover:border-white/20 hover:shadow-xl hover:shadow-black/30 hover:-translate-y-0.5"
     >
       {/* Coloured banner with logo */}
-      <div className={cn(
-        "flex h-24 items-center justify-center bg-gradient-to-br",
-        game.color,
-      )}>
+      <div className="flex h-24 items-center justify-center" style={{ background: game.color }}>
         <span className="text-5xl drop-shadow-lg select-none">{game.logo}</span>
       </div>
 

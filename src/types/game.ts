@@ -24,7 +24,7 @@ export interface GameMeta {
   component: string;
   /** Emoji shown on the game card */
   logo: string;
-  /** Tailwind gradient classes for the card banner, e.g. "from-blue-600 to-indigo-700" */
+  /** CSS gradient for the card banner, e.g. "linear-gradient(135deg,#1e3a5f,#0f172a)" */
   color: string;
 }
 

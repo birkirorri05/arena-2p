@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-arena-border bg-arena-bg/80 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-arena-border bg-white/85 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-xl font-bold text-arena-accent">Arena</span>

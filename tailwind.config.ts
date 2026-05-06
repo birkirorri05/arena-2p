@@ -10,14 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         arena: {
-          bg: "#0f0f1a",
-          surface: "#1a1a2e",
-          border: "#2a2a4a",
-          accent: "#6366f1",
-          "accent-hover": "#4f46e5",
-          muted: "#4a4a6a",
-          text: "#e2e8f0",
-          "text-muted": "#94a3b8",
+          bg: "#f5f2ed",
+          surface: "#ffffff",
+          border: "#e4ddd3",
+          accent: "#4f46e5",
+          "accent-hover": "#4338ca",
+          muted: "#ccc7be",
+          text: "#18181b",
+          "text-muted": "#6b7280",
         },
       },
       fontFamily: {

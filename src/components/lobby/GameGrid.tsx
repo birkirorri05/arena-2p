@@ -17,10 +17,10 @@ export function GameGrid() {
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setActiveTag(null)}
-          className={`rounded-full border px-4 py-1 text-sm transition-colors ${
+          className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
             !activeTag
               ? "border-arena-accent bg-arena-accent text-white"
-              : "border-arena-border text-arena-text-muted hover:border-arena-accent hover:text-arena-text"
+              : "border-arena-border bg-white text-arena-text-muted hover:border-arena-accent hover:text-arena-accent"
           }`}
         >
           All
@@ -29,10 +29,10 @@ export function GameGrid() {
           <button
             key={tag}
             onClick={() => setActiveTag(tag === activeTag ? null : tag)}
-            className={`rounded-full border px-4 py-1 text-sm capitalize transition-colors ${
+            className={`rounded-full border px-4 py-1.5 text-sm font-medium capitalize transition-colors ${
               activeTag === tag
                 ? "border-arena-accent bg-arena-accent text-white"
-                : "border-arena-border text-arena-text-muted hover:border-arena-accent hover:text-arena-text"
+                : "border-arena-border bg-white text-arena-text-muted hover:border-arena-accent hover:text-arena-accent"
             }`}
           >
             {tag}

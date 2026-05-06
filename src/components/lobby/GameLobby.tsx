@@ -90,7 +90,7 @@ export function GameLobby({ game }: GameLobbyProps) {
         <Button className="w-full" onClick={handleCreate} disabled={!!loading}>
           {loading === "create" ? "Creating…" : "Create room"}
         </Button>
-        {error && <p className="text-sm text-red-400">{error}</p>}
+        {error && <p className="text-sm text-red-600">{error}</p>}
       </Card>
 
       <Card className="space-y-4">

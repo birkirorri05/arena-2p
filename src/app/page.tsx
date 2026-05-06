@@ -32,7 +32,6 @@ export default function HomePage() {
 
       {/* Game grid */}
       <section>
-        <h2 className="mb-6 text-2xl font-semibold text-arena-text">All games</h2>
         <GameGrid />
       </section>
     </div>

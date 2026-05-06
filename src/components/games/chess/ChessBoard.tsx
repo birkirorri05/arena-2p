@@ -97,6 +97,7 @@ export default function ChessBoard({ room }: Props) {
 
   const handleSquareClick = useCallback(
     (sq: Square) => {
+      if (room.status !== "playing") return;
       if (game.isGameOver()) return;
       if (game.turn() !== myColor) return;
 

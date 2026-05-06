@@ -128,7 +128,7 @@ export default function Connect4Board({ room }: Props) {
 
   const handleColClick = useCallback(
     (col: number) => {
-      if (!isMyTurn || winner || isDraw) return;
+      if (room.status !== "playing" || !isMyTurn || winner || isDraw) return;
       const next = dropPiece(board, col, myColor);
       if (!next) return; // column full
       setBoard(next);

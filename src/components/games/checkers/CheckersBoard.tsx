@@ -182,7 +182,7 @@ export default function CheckersBoard({ room }: Props) {
 
   const handleClick = useCallback(
     (row: number, col: number) => {
-      if (!isMyTurn || gameOver) return;
+      if (room.status !== "playing" || !isMyTurn || gameOver) return;
 
       if (selected) {
         const move = allMoves.find(

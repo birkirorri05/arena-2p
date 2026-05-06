@@ -136,7 +136,7 @@ export default function ScrabbleBoard({room}:Props) {
   },[gameOver,myScore,oppScore,myId,isHost,room.guestId,room.hostId]);
 
   const handleCell=useCallback((row:number,col:number)=>{
-    if(!isMyTurn||gameOver)return;
+    if(room.status!=="playing"||!isMyTurn||gameOver)return;
     const pi=pending.findIndex(t=>t.row===row&&t.col===col);
     if(pi>=0){
       const t=pending[pi];
@@ -152,7 +152,7 @@ export default function ScrabbleBoard({room}:Props) {
   },[isMyTurn,gameOver,pending,selIdx,board,myRack]);
 
   const handleSubmit=useCallback(()=>{
-    if(!isMyTurn||!pending.length||gameOver)return;
+    if(room.status!=="playing"||!isMyTurn||!pending.length||gameOver)return;
     const isFirst=board.every(r=>r.every(c=>c===null));
     const res=validateAndScore(board,pending,isFirst);
     if(!res.valid){setError(res.error??"Invalid");return;}
@@ -171,7 +171,7 @@ export default function ScrabbleBoard({room}:Props) {
   },[pending]);
 
   const handlePass=useCallback(()=>{
-    if(!isMyTurn||gameOver)return;
+    if(room.status!=="playing"||!isMyTurn||gameOver)return;
     if(pending.length){setMyRack(prev=>{const n=prev.filter(l=>l!=="");for(const t of pending)n.push(t.letter);return n;});setPending([]);setSelIdx(null);}
     setHostTurn(v=>!v);setPasses(v=>v+1);setError("");
     getSocket().emit("game:move",room.id,{playerId:myId??"",timestamp:Date.now(),payload:{type:"pass"}});

@@ -140,7 +140,7 @@ export default function ReversiBoard({ room }: Props) {
 
   const handleClick = useCallback(
     (row: number, col: number) => {
-      if (!isMyTurn || gameOver) return;
+      if (room.status !== "playing" || !isMyTurn || gameOver) return;
       if (!myLegalSet.has(`${row},${col}`)) return;
 
       const next = applyMove(board, row, col, myColor);
@@ -157,7 +157,7 @@ export default function ReversiBoard({ room }: Props) {
   );
 
   const handlePass = useCallback(() => {
-    if (!isMyTurn || gameOver || legalMoves.length > 0) return;
+    if (room.status !== "playing" || !isMyTurn || gameOver || legalMoves.length > 0) return;
     setBlackNext((p) => !p);
     setPassed(true);
     getSocket().emit("game:move", room.id, {

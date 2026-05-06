@@ -7,8 +7,8 @@ export default function HomePage() {
       {/* Hero */}
       <section className="py-16 text-center">
         <h1 className="mb-4 text-5xl font-bold tracking-tight text-arena-text sm:text-6xl">
-          Two players.{" "}
-          <span className="text-arena-accent">One winner.</span>
+          SUPER FUN{" "}
+          <span className="text-arena-accent">GAMESSSSS</span>
         </h1>
         <p className="mx-auto mb-8 max-w-xl text-lg text-arena-text-muted">
           Jump into chess, scrabble, pong, street fighter, and dozens more. No

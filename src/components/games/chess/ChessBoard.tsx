@@ -201,8 +201,8 @@ export default function ChessBoard({ room }: Props) {
                         className="select-none leading-none text-[42px]"
                         style={
                           piece.color === "w"
-                            ? { color: "#fff", WebkitTextStroke: "1.5px #1a1a1a", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }
-                            : { color: "#1a1a1a", WebkitTextStroke: "0.5px rgba(255,255,255,0.4)", textShadow: "0 2px 4px rgba(0,0,0,0.35)" }
+                            ? { color: "#fff", WebkitTextStroke: "2px #1a1a1a", paintOrder: "stroke fill", textShadow: "0 2px 5px rgba(0,0,0,0.45)" }
+                            : { color: "#1a1a1a", WebkitTextStroke: "1px rgba(255,255,255,0.5)", paintOrder: "stroke fill", textShadow: "0 2px 4px rgba(0,0,0,0.3)" }
                         }
                       >
                         {PIECE_GLYPH[piece.type]}
@@ -237,8 +237,8 @@ export default function ChessBoard({ room }: Props) {
                 className="text-[36px] leading-none select-none"
                 style={
                   myColor === "w"
-                    ? { color: "#fff", WebkitTextStroke: "1.5px #1a1a1a", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }
-                    : { color: "#1a1a1a", WebkitTextStroke: "0.5px rgba(255,255,255,0.4)" }
+                    ? { color: "#fff", WebkitTextStroke: "2px #1a1a1a", paintOrder: "stroke fill", textShadow: "0 2px 5px rgba(0,0,0,0.45)" }
+                    : { color: "#1a1a1a", WebkitTextStroke: "1px rgba(255,255,255,0.5)", paintOrder: "stroke fill" }
                 }
               >
                 {PIECE_GLYPH[p]}

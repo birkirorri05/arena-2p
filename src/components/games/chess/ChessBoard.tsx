@@ -11,9 +11,11 @@ type Square = string; // e.g. "e4"
 type PieceSymbol = "p" | "n" | "b" | "r" | "q" | "k";
 type Color = "w" | "b";
 
-const PIECE_UNICODE: Record<Color, Record<PieceSymbol, string>> = {
-  w: { k: "♔", q: "♕", r: "♖", b: "♗", n: "♘", p: "♙" },
-  b: { k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟" },
+// Use filled (solid) glyphs for both colors — the "white" set (♔…♙) are
+// hollow outlines and look transparent. Styling filled glyphs white with a
+// dark stroke gives a clear, solid piece on any square color.
+const PIECE_GLYPH: Record<PieceSymbol, string> = {
+  k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟",
 };
 
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -159,14 +161,14 @@ export default function ChessBoard({ room }: Props) {
 
       <div className="flex">
         {/* Rank labels */}
-        <div className="flex flex-col justify-around pr-1">
+        <div className="flex flex-col pr-1">
           {displayRanks.map((r) => (
-            <span key={r} className="text-xs text-arena-text-muted w-3 text-center">{r}</span>
+            <span key={r} className="flex h-[60px] w-4 items-center justify-center text-xs text-arena-text-muted">{r}</span>
           ))}
         </div>
 
         <div className="flex flex-col">
-          <div className="grid grid-cols-8 border border-arena-border">
+          <div className="grid grid-cols-8 border-2 border-arena-border">
             {displayRanks.map((rank) =>
               displayFiles.map((file) => {
                 const sq = `${file}${rank}` as Square;
@@ -176,28 +178,34 @@ export default function ChessBoard({ room }: Props) {
                 const isLight = (FILES.indexOf(file) + parseInt(rank)) % 2 === 0;
                 const isSelected = selected === sq;
                 const isTarget = legalTargets.includes(sq);
-                const isLastMove = game.history({ verbose: true }).slice(-1)[0];
-                const isRecent = isLastMove && (isLastMove.from === sq || isLastMove.to === sq);
+                const lastMove = game.history({ verbose: true }).slice(-1)[0];
+                const isRecent = lastMove && (lastMove.from === sq || lastMove.to === sq);
 
                 return (
                   <button
                     key={sq}
                     onClick={() => handleSquareClick(sq)}
                     className={cn(
-                      "flex h-10 w-10 items-center justify-center text-2xl transition-colors",
-                      isLight ? "bg-amber-100" : "bg-amber-800",
-                      isSelected && "ring-2 ring-inset ring-yellow-400",
-                      isRecent && !isSelected && "bg-yellow-300/40",
-                      isTarget && piece && "ring-2 ring-inset ring-red-400",
-                      isTarget && !piece && "after:content-[''] after:block after:w-3 after:h-3 after:rounded-full after:bg-black/25",
+                      "relative flex h-[60px] w-[60px] items-center justify-center transition-colors",
+                      isLight ? "bg-[#f0d9b5]" : "bg-[#b58863]",
+                      isSelected && "brightness-110 ring-3 ring-inset ring-yellow-400",
+                      isRecent && !isSelected && "brightness-90",
+                      isTarget && piece && "ring-3 ring-inset ring-red-500",
                     )}
                   >
+                    {isTarget && !piece && (
+                      <span className="absolute block h-5 w-5 rounded-full bg-black/25 pointer-events-none" />
+                    )}
                     {piece && (
-                      <span className={cn(
-                        "select-none leading-none",
-                        piece.color === "w" ? "text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]" : "text-gray-900"
-                      )}>
-                        {PIECE_UNICODE[piece.color][piece.type]}
+                      <span
+                        className="select-none leading-none text-[42px]"
+                        style={
+                          piece.color === "w"
+                            ? { color: "#fff", WebkitTextStroke: "1.5px #1a1a1a", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }
+                            : { color: "#1a1a1a", WebkitTextStroke: "0.5px rgba(255,255,255,0.4)", textShadow: "0 2px 4px rgba(0,0,0,0.35)" }
+                        }
+                      >
+                        {PIECE_GLYPH[piece.type]}
                       </span>
                     )}
                   </button>
@@ -209,7 +217,7 @@ export default function ChessBoard({ room }: Props) {
           {/* File labels */}
           <div className="flex">
             {displayFiles.map((f) => (
-              <span key={f} className="w-10 text-center text-xs text-arena-text-muted">{f}</span>
+              <span key={f} className="w-[60px] text-center text-xs text-arena-text-muted">{f}</span>
             ))}
           </div>
         </div>
@@ -223,12 +231,17 @@ export default function ChessBoard({ room }: Props) {
             <button
               key={p}
               onClick={() => applyMove(promotion.from, promotion.to, p)}
-              className="flex h-12 w-12 items-center justify-center rounded-lg border border-arena-border bg-arena-bg text-3xl hover:bg-arena-surface"
+              className="flex h-14 w-14 items-center justify-center rounded-lg border border-arena-border bg-arena-bg hover:bg-arena-surface"
             >
-              <span className={cn(
-                myColor === "w" ? "text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]" : "text-gray-900"
-              )}>
-                {PIECE_UNICODE[myColor][p]}
+              <span
+                className="text-[36px] leading-none select-none"
+                style={
+                  myColor === "w"
+                    ? { color: "#fff", WebkitTextStroke: "1.5px #1a1a1a", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }
+                    : { color: "#1a1a1a", WebkitTextStroke: "0.5px rgba(255,255,255,0.4)" }
+                }
+              >
+                {PIECE_GLYPH[p]}
               </span>
             </button>
           ))}

@@ -6,10 +6,11 @@ import { useGameStore } from "@/store/gameStore";
 
 export function useSocket() {
   const connected = useRef(false);
+  const myPlayerId = useGameStore((s) => s.myPlayerId);
+  const myPlayerName = useGameStore((s) => s.myPlayerName);
   const { setRoom, setPlayers, addMove, setResult } = useGameStore();
 
   useEffect(() => {
-    const { myPlayerId, myPlayerName } = useGameStore.getState();
     if (!myPlayerId || connected.current) return;
 
     const socket = connectSocket(myPlayerId, myPlayerName);
@@ -28,7 +29,7 @@ export function useSocket() {
       disconnectSocket();
       connected.current = false;
     };
-  }, [setRoom, setPlayers, addMove, setResult]);
+  }, [myPlayerId, myPlayerName, setRoom, setPlayers, addMove, setResult]);
 
   return getSocket();
 }

@@ -22,7 +22,16 @@ export function GameLobby({ game }: GameLobbyProps) {
 
   const { setMyPlayer } = useGameStore();
   const { createRoom, joinRoom } = useRoom();
-  useSocket(); // ensures socket is connected
+
+  // Initialize player identity on first visit so the socket connects immediately
+  useEffect(() => {
+    const state = useGameStore.getState();
+    if (!state.myPlayerId) {
+      setMyPlayer(uuidv4(), generateGuestName());
+    }
+  }, [setMyPlayer]);
+
+  useSocket(); // connects once myPlayerId is set
 
   function ensurePlayer() {
     const state = useGameStore.getState();

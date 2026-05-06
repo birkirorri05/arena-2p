@@ -12,20 +12,24 @@ type Square = string; // e.g. "e4"
 type PieceSymbol = "p" | "n" | "b" | "r" | "q" | "k";
 type Color = "w" | "b";
 
-// Filled glyphs for both colors.
+// ︎ = Unicode text-presentation selector — forces monochrome text
+// rendering instead of emoji on Windows/Android/iOS.
+const T = "︎";
 const PIECE_GLYPH: Record<PieceSymbol, string> = {
-  k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟",
+  k: `♚${T}`, q: `♛${T}`, r: `♜${T}`, b: `♝${T}`, n: `♞${T}`, p: `♟${T}`,
 };
 
-// text-shadow outline: always renders behind the glyph fill, so white pieces
-// stay white regardless of browser support for paint-order / WebkitTextStroke.
+// Prefer symbol fonts so the OS emoji font doesn't override the glyph.
+const PIECE_FONT = '"Segoe UI Symbol","Apple Symbols","FreeSerif",serif';
 const OUTLINE = "-1px -1px 0 #1a1a1a, 1px -1px 0 #1a1a1a, -1px 1px 0 #1a1a1a, 1px 1px 0 #1a1a1a";
 const WHITE_PIECE_STYLE: CSSProperties = {
   color: "#ffffff",
+  fontFamily: PIECE_FONT,
   textShadow: `${OUTLINE}, 0 2px 6px rgba(0,0,0,0.4)`,
 };
 const BLACK_PIECE_STYLE: CSSProperties = {
   color: "#1a1a1a",
+  fontFamily: PIECE_FONT,
   textShadow: "0 1px 3px rgba(0,0,0,0.35)",
 };
 

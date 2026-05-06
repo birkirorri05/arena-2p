@@ -10,7 +10,8 @@ export type GameId =
   | "checkers"
   | "connect4"
   | "tictactoe"
-  | "reversi";
+  | "reversi"
+  | "mancala";
 
 export interface GameMeta {
   id: GameId;

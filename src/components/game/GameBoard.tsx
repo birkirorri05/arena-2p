@@ -26,6 +26,7 @@ const GAME_COMPONENTS: Record<string, React.ComponentType<{ room: GameRoom }>> =
   connect4: dynamic(() => import("@/components/games/connect4/Connect4Board")),
   tictactoe: dynamic(() => import("@/components/games/tictactoe/TicTacToeBoard")),
   reversi: dynamic(() => import("@/components/games/reversi/ReversiBoard")),
+  mancala: dynamic(() => import("@/components/games/mancala/MancalaBoard")),
 };
 
 export function GameBoard({ room, players, onResign }: GameBoardProps) {

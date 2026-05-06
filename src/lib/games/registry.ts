@@ -99,6 +99,14 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     component: "reversi/ReversiBoard",
     logo: "🟢", color: g("#15803d", "#14532d"),
   },
+  mancala: {
+    id: "mancala", name: "Mancala",
+    description: "Sow seeds, capture pits, fill your store.",
+    minPlayers: 2, maxPlayers: 2, estimatedMinutes: 15,
+    tags: ["board", "classic", "strategy"],
+    component: "mancala/MancalaBoard",
+    logo: "🪨", color: g("#92400e", "#3b1a08"),
+  },
 };
 
 export const GAMES = Object.values(GAME_REGISTRY);

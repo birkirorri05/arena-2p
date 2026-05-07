@@ -115,7 +115,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     description: "Play matching suit or rank. Eights are wild!",
     minPlayers: 2, maxPlayers: 4, estimatedMinutes: 20,
     tags: ["card", "classic"],
-    component: "_stub",
+    component: "crazyeights/CrazyEightsBoard",
     color: g("#7c3aed", "#3b0764"),
   },
   gofish: {

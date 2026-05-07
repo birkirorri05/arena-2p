@@ -54,16 +54,16 @@ function ChessLogo() {
   const L = '#f0d9b5'; // light square (chess.com cream)
   const D = '#b58863'; // dark square  (chess.com brown)
 
-  // Standard starting position — row 0 = black back rank, row 7 = white back rank
+  // Ruy Lopez mid-game, ~move 18 — pieces developed, pawns broken, both kings castled
   const pos = [
-    ['♜','♞','♝','♛','♚','♝','♞','♜'],
-    ['♟','♟','♟','♟','♟','♟','♟','♟'],
-    ['','','','','','','',''],
-    ['','','','','','','',''],
-    ['','','','','','','',''],
-    ['','','','','','','',''],
-    ['♙','♙','♙','♙','♙','♙','♙','♙'],
-    ['♖','♘','♗','♕','♔','♗','♘','♖'],
+    ['♜','','','','♜','','♚',''],   // Ra8  Re8  Kg8
+    ['','♝','♟','','','♟','♟','♟'], // Bb7  c7   f7 g7 h7
+    ['♟','','♞','♟','','♞','',''], // a6   Nc6  d6     Nf6
+    ['','♟','','','♟','','',''],   //      b5        e5
+    ['','','','','♙','','♝',''],   //               e4      Bg4 (pinning)
+    ['','','♘','','','♘','',''],   //      Nc3            Nf3
+    ['♙','♙','','♙','','♙','♙','♙'], // a2 b2  d2   f2 g2 h2
+    ['♖','','♗','♕','','♖','♔',''], // Ra1  Bc1  Qd1    Rf1  Kg1
   ];
 
   return (
@@ -73,19 +73,23 @@ function ChessLogo() {
         <rect key={`s${r}${c}`} x={c*10} y={r*10} width={10} height={10}
           fill={(r+c)%2===0 ? L : D}/>
       )))}
-      {/* Pieces — Unicode chess symbols at fontSize 9, outlined for legibility */}
-      {pos.map((row, r) => row.map((p, c) => !p ? null : (
-        <text key={`p${r}${c}`}
-          x={c*10+5} y={r*10+8.5}
-          textAnchor="middle"
-          fontSize={9}
-          fontFamily="serif"
-          fill={r < 2 ? '#1c1008' : '#fffbf0'}
-          stroke={r < 2 ? 'rgba(255,220,160,0.55)' : 'rgba(0,0,0,0.75)'}
-          strokeWidth={0.4}
-          style={{paintOrder:'stroke fill'}}
-        >{p}</text>
-      )))}
+      {/* Pieces — colour by piece type, not row */}
+      {pos.map((row, r) => row.map((p, c) => {
+        if (!p) return null;
+        const blk = '♜♞♝♛♚♟'.includes(p);
+        return (
+          <text key={`p${r}${c}`}
+            x={c*10+5} y={r*10+8.5}
+            textAnchor="middle"
+            fontSize={9}
+            fontFamily="serif"
+            fill={blk ? '#1c1008' : '#fffbf0'}
+            stroke={blk ? 'rgba(255,220,160,0.55)' : 'rgba(0,0,0,0.75)'}
+            strokeWidth={0.4}
+            style={{paintOrder:'stroke fill'}}
+          >{p}</text>
+        );
+      }))}
     </svg>
   );
 }

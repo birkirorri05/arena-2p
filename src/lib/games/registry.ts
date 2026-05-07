@@ -99,7 +99,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     description: "Beat the dealer. Hit or stand to reach 21.",
     minPlayers: 2, maxPlayers: 6, estimatedMinutes: 20,
     tags: ["card", "classic"],
-    component: "_stub",
+    component: "blackjack/BlackjackBoard",
     color: g("#15803d", "#052e16"),
   },
   wildcards: {

@@ -147,7 +147,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     description: "Avoid hearts and the Queen of Spades. Shoot the moon!",
     minPlayers: 4, maxPlayers: 4, estimatedMinutes: 30,
     tags: ["card", "strategy", "classic"],
-    component: "_stub",
+    component: "hearts/HeartsBoard",
     color: g("#be185d", "#500724"),
   },
   rummy: {

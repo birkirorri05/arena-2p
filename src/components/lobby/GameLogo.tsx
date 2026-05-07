@@ -464,14 +464,49 @@ function GoFishLogo() {
   return (
     <svg viewBox={VB} className={CLS}>
       <CardStack cards={[
-        {x:6,  y:8, r:-12, rank:"7", suit:"♣", color:"#166534"},
-        {x:46, y:8, r:12,  rank:"7", suit:"♦", color:"#dc2626"},
+        {x:4,  y:7, r:-14, rank:"7", suit:"♣", color:"#166534"},
+        {x:44, y:7, r:14,  rank:"7", suit:"♦", color:"#dc2626"},
       ]}/>
-      {/* Fish */}
-      <path d="M20,58 Q28,48 40,52 Q52,56 60,50 Q56,60 60,68 Q48,64 40,66 Q28,70 20,58Z"
-        fill="rgba(255,255,255,0.7)"/>
-      <circle cx={56} cy={54} r={2} fill="rgba(0,0,0,0.5)"/>
-      <path d="M56,54 Q62,50 66,48 Q62,55 66,62 Q60,58 56,54Z" fill="rgba(255,255,255,0.7)"/>
+
+      {/* Water surface */}
+      <path d="M0,51 Q10,48 20,51 Q30,54 40,51 Q50,48 60,51 Q70,54 80,51 L80,80 L0,80 Z"
+        fill="rgba(30,100,210,0.18)"/>
+
+      {/* Tail fin */}
+      <path d="M52,63 L65,54 L65,72 Z"
+        fill="rgba(234,88,12,0.92)" stroke="rgba(180,50,5,0.4)" strokeWidth={0.5}/>
+
+      {/* Body */}
+      <ellipse cx={36} cy={63} rx={17} ry={10}
+        fill="rgba(251,146,60,0.96)" stroke="rgba(194,65,12,0.45)" strokeWidth={0.7}/>
+
+      {/* Dorsal fin */}
+      <path d="M29,53 Q36,46 44,53"
+        fill="rgba(249,115,22,0.88)" stroke="rgba(194,65,12,0.35)" strokeWidth={0.5}/>
+
+      {/* Pectoral fin */}
+      <ellipse cx={38} cy={71} rx={7} ry={3}
+        transform="rotate(-18,38,71)" fill="rgba(249,115,22,0.72)"/>
+
+      {/* Scales */}
+      {[[32,60],[38,59],[44,60],[34,65],[40,64],[46,65]].map(([sx,sy],i)=>(
+        <path key={i} d={`M${sx-3},${sy} Q${sx},${sy-3} ${sx+3},${sy}`}
+          fill="none" stroke="rgba(180,60,10,0.3)" strokeWidth={0.9}/>
+      ))}
+
+      {/* Eye */}
+      <circle cx={20} cy={62} r={3.2} fill="white"/>
+      <circle cx={20} cy={62} r={2}   fill="#111"/>
+      <circle cx={19} cy={61} r={0.7} fill="white"/>
+
+      {/* Mouth */}
+      <path d="M18,65 Q16,68 18,70"
+        fill="none" stroke="rgba(150,45,8,0.8)" strokeWidth={1} strokeLinecap="round"/>
+
+      {/* Bubbles */}
+      <circle cx={14} cy={50} r={1.8} fill="none" stroke="rgba(160,210,255,0.65)" strokeWidth={0.9}/>
+      <circle cx={11} cy={45} r={1.2} fill="none" stroke="rgba(160,210,255,0.5)"  strokeWidth={0.7}/>
+      <circle cx={15} cy={41} r={0.8} fill="none" stroke="rgba(160,210,255,0.4)"  strokeWidth={0.6}/>
     </svg>
   );
 }

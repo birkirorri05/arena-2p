@@ -9,14 +9,12 @@ interface GameState {
   result: GameResult | null;
   myPlayerId: string | null;
   myPlayerName: string;
-  hydrated: boolean;
 
   setRoom: (room: GameRoom) => void;
   setPlayers: (players: GamePlayer[]) => void;
   addMove: (move: GameMove) => void;
   setResult: (result: GameResult) => void;
   setMyPlayer: (id: string, name: string) => void;
-  hydrate: () => void;
   reset: () => void;
 }
 
@@ -27,7 +25,6 @@ export const useGameStore = create<GameState>((set) => ({
   result: null,
   myPlayerId: null,
   myPlayerName: "",
-  hydrated: false,
 
   setRoom: (room) =>
     set((state) => {
@@ -41,15 +38,6 @@ export const useGameStore = create<GameState>((set) => ({
   setPlayers: (players) => set({ players }),
   addMove: (move) => set((s) => ({ moves: [...s.moves, move] })),
   setResult: (result) => set({ result }),
-  setMyPlayer: (id, name) => {
-    sessionStorage.setItem("arena_player_id", id);
-    localStorage.setItem("arena_player_name", name);
-    set({ myPlayerId: id, myPlayerName: name });
-  },
-  hydrate: () => {
-    const myPlayerId = sessionStorage.getItem("arena_player_id");
-    const myPlayerName = localStorage.getItem("arena_player_name") ?? "";
-    set({ myPlayerId, myPlayerName, hydrated: true });
-  },
+  setMyPlayer: (id, name) => set({ myPlayerId: id, myPlayerName: name }),
   reset: () => set({ room: null, players: [], moves: [], result: null }),
 }));

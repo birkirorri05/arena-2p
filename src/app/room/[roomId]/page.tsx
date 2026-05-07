@@ -11,7 +11,7 @@ import { GameOverlay } from "@/components/game/GameOverlay";
 // Socket is connected globally by Providers — use getSocket() directly.
 export default function RoomPage() {
   const { roomId } = useParams<{ roomId: string }>();
-  const { room, players, result, resign, rematch, leaveRoom } = useRoom();
+  const { room, players, result, resign, rematch, leaveRoom, startGame } = useRoom();
 
   useEffect(() => {
     if (!roomId || room) return;
@@ -31,7 +31,7 @@ export default function RoomPage() {
   return (
     <div className="relative">
       {result && <GameOverlay result={result} onRematch={rematch} onLeave={leaveRoom} />}
-      <GameBoard room={room} players={players} onResign={resign} />
+      <GameBoard room={room} players={players} onResign={resign} onStart={startGame} />
     </div>
   );
 }

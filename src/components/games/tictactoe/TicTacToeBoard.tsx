@@ -66,10 +66,10 @@ export default function TicTacToeBoard({ room }: Props) {
   useEffect(() => {
     if (!winner && !isDraw) return;
     if (useGameStore.getState().result) return;
-    const opponentId = isHost ? room.guestId : room.hostId;
+    const opponentId = isHost ? room.playerIds[1] : room.hostId;
     const winnerId = winner ? (winner === myMark ? myId ?? null : opponentId) : null;
     useGameStore.getState().setResult({ winnerId, reason: winner ? "checkmate" : "draw" });
-  }, [winner, isDraw, myMark, myId, isHost, room.guestId, room.hostId]);
+  }, [winner, isDraw, myMark, myId, isHost, room.playerIds, room.hostId]);
 
   const handleClick = useCallback(
     (idx: number) => {

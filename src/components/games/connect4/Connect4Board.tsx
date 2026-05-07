@@ -119,12 +119,12 @@ export default function Connect4Board({ room }: Props) {
   useEffect(() => {
     if (!winner && !isDraw) return;
     if (useGameStore.getState().result) return;
-    const opponentId = isHost ? room.guestId : room.hostId;
+    const opponentId = isHost ? room.playerIds[1] : room.hostId;
     const winnerId = winner
       ? (winner === myColor ? myId ?? null : opponentId)
       : null;
     useGameStore.getState().setResult({ winnerId, reason: winner ? "connect4" : "draw" });
-  }, [winner, isDraw, myColor, myId, isHost, room.guestId, room.hostId]);
+  }, [winner, isDraw, myColor, myId, isHost, room.playerIds, room.hostId]);
 
   const handleColClick = useCallback(
     (col: number) => {

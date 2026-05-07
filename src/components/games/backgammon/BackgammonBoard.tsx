@@ -204,9 +204,9 @@ export default function BackgammonBoard({ room }: Props) {
 
   useEffect(() => {
     if (useGameStore.getState().result) return;
-    if (gs.off.W === 15) useGameStore.getState().setResult({ winnerId: room.hostId,         reason: "bearoff" });
-    if (gs.off.B === 15) useGameStore.getState().setResult({ winnerId: room.guestId ?? null, reason: "bearoff" });
-  }, [gs.off.W, gs.off.B, room.hostId, room.guestId]);
+    if (gs.off.W === 15) useGameStore.getState().setResult({ winnerId: room.hostId,               reason: "bearoff" });
+    if (gs.off.B === 15) useGameStore.getState().setResult({ winnerId: room.playerIds[1] ?? null, reason: "bearoff" });
+  }, [gs.off.W, gs.off.B, room.hostId, room.playerIds]);
 
   const emit = useCallback((payload: Mv) => {
     getSocket().emit("game:move", room.id, { playerId: myId ?? "", timestamp: Date.now(), payload });

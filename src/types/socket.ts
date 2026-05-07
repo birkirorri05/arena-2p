@@ -2,13 +2,17 @@ import type { GameId, GameMove, GameRoom, GamePlayer } from "./game";
 
 // ── Client → Server ──────────────────────────────────────────────────────────
 export interface ClientToServerEvents {
-  "room:create": (gameId: GameId, callback: (room: GameRoom) => void) => void;
+  "room:create": (
+    gameId: GameId,
+    opts: { minPlayers: number; maxPlayers: number },
+    callback: (room: GameRoom) => void
+  ) => void;
   "room:join": (roomId: string, callback: (room: GameRoom | null) => void) => void;
   "room:leave": (roomId: string) => void;
   "game:move": (roomId: string, move: GameMove) => void;
   "game:resign": (roomId: string) => void;
   "game:rematch": (roomId: string) => void;
-  "player:ready": (roomId: string) => void;
+  "game:start": (roomId: string) => void;
 }
 
 // ── Server → Client ──────────────────────────────────────────────────────────
@@ -25,7 +29,7 @@ export interface ServerToClientEvents {
 
 export interface GameResult {
   winnerId: string | null;
-  reason: "checkmate" | "resignation" | "timeout" | "draw" | "disconnect" | string;
+  reason: string;
 }
 
 export interface InterServerEvents {}

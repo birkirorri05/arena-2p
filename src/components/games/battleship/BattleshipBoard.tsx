@@ -117,9 +117,9 @@ export default function BattleshipBoard({ room }: Props) {
   // Game over
   useEffect(() => {
     if (!gameOver || useGameStore.getState().result) return;
-    const winnerId = iWon ? (myId ?? null) : (isHost ? room.guestId : room.hostId);
+    const winnerId = iWon ? (myId ?? null) : (isHost ? room.playerIds[1] : room.hostId);
     useGameStore.getState().setResult({ winnerId, reason: "all ships sunk" });
-  }, [gameOver, iWon, myId, isHost, room.guestId, room.hostId]);
+  }, [gameOver, iWon, myId, isHost, room.playerIds, room.hostId]);
 
   const handlePlace = useCallback((r: number, c: number) => {
     if (allPlaced) return;

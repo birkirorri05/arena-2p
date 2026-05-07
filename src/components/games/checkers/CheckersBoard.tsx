@@ -176,9 +176,9 @@ export default function CheckersBoard({ room }: Props) {
     if (!gameOver) return;
     if (useGameStore.getState().result) return;
     const loserIsHost = currentColor === "r";
-    const winnerId = loserIsHost ? room.guestId : room.hostId;
+    const winnerId = loserIsHost ? room.playerIds[1] : room.hostId;
     useGameStore.getState().setResult({ winnerId, reason: "no moves" });
-  }, [gameOver, currentColor, room.hostId, room.guestId]);
+  }, [gameOver, currentColor, room.hostId, room.playerIds]);
 
   const handleClick = useCallback(
     (row: number, col: number) => {

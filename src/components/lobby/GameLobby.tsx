@@ -14,6 +14,10 @@ export function GameLobby({ game }: { game: GameMeta }) {
   const [error, setError]       = useState<string | null>(null);
   const { createRoom, joinRoom } = useRoom();
 
+  const playerRange = game.minPlayers === game.maxPlayers
+    ? `${game.minPlayers} players`
+    : `${game.minPlayers}–${game.maxPlayers} players`;
+
   async function handleCreate() {
     setLoading("create"); setError(null);
     try {
@@ -38,8 +42,9 @@ export function GameLobby({ game }: { game: GameMeta }) {
 
   return (
     <div className="mx-auto max-w-sm py-12 space-y-6">
-      <div className="text-center">
+      <div className="text-center space-y-1">
         <h1 className="text-3xl font-bold text-arena-text">{game.name}</h1>
+        <p className="text-sm text-arena-text-muted">{playerRange} · ~{game.estimatedMinutes} min</p>
       </div>
 
       <div className="rounded-xl border border-arena-border bg-arena-surface p-5 space-y-3">

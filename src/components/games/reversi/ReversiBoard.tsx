@@ -133,10 +133,10 @@ export default function ReversiBoard({ room }: Props) {
     let winnerId: string | null = null;
     if (counts.b !== counts.w) {
       const winnerColor: Color = counts.b > counts.w ? "b" : "w";
-      winnerId = winnerColor === "b" ? room.hostId : (room.guestId ?? null);
+      winnerId = winnerColor === "b" ? room.hostId : (room.playerIds[1] ?? null);
     }
     useGameStore.getState().setResult({ winnerId, reason: "most pieces" });
-  }, [gameOver, counts.b, counts.w, room.hostId, room.guestId]);
+  }, [gameOver, counts.b, counts.w, room.hostId, room.playerIds]);
 
   const handleClick = useCallback(
     (row: number, col: number) => {

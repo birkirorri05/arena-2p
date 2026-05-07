@@ -7,19 +7,34 @@ export type GameId =
   | "connect4"
   | "tictactoe"
   | "reversi"
-  | "mancala";
+  | "mancala"
+  | "battleship"
+  // card games
+  | "war"
+  | "blackjack"
+  | "uno"
+  | "crazyeights"
+  | "gofish"
+  | "poker"
+  | "snap"
+  | "hearts"
+  | "rummy"
+  // multi-player extras
+  | "yahtzee"
+  | "liarsdice"
+  | "dominoes";
 
 export interface GameMeta {
   id: GameId;
   name: string;
   description: string;
-  minPlayers: 2;
-  maxPlayers: 2;
+  minPlayers: number;
+  maxPlayers: number;
   estimatedMinutes: number;
   tags: GameTag[];
   /** Relative path to the game's board/canvas component */
   component: string;
-  /** CSS gradient for the card banner, e.g. "linear-gradient(135deg,#1e3a5f,#0f172a)" */
+  /** CSS gradient for the card banner */
   color: string;
 }
 
@@ -30,7 +45,8 @@ export type GameTag =
   | "action"
   | "classic"
   | "fighting"
-  | "arcade";
+  | "arcade"
+  | "dice";
 
 export type GameStatus = "waiting" | "playing" | "finished" | "abandoned";
 
@@ -38,7 +54,10 @@ export interface GameRoom {
   id: string;
   gameId: GameId;
   hostId: string;
-  guestId: string | null;
+  /** All players in join order; playerIds[0] is always the host. */
+  playerIds: string[];
+  minPlayers: number;
+  maxPlayers: number;
   status: GameStatus;
   createdAt: number;
   /** Opaque serialised game state — shape differs per game */
@@ -51,7 +70,7 @@ export interface GameMove {
   payload: unknown;
 }
 
-export type PlayerSlot = "host" | "guest";
+export type PlayerSlot = "host" | "p2" | "p3" | "p4" | "p5" | "p6";
 
 export interface GamePlayer {
   id: string;

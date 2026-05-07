@@ -131,9 +131,9 @@ export default function ScrabbleBoard({room}:Props) {
 
   useEffect(()=>{
     if(!gameOver||useGameStore.getState().result)return;
-    const winnerId=myScore>oppScore?(myId??null):myScore<oppScore?(isHost?room.guestId:room.hostId):null;
+    const winnerId=myScore>oppScore?(myId??null):myScore<oppScore?(isHost?room.playerIds[1]:room.hostId):null;
     useGameStore.getState().setResult({winnerId,reason:"highest score"});
-  },[gameOver,myScore,oppScore,myId,isHost,room.guestId,room.hostId]);
+  },[gameOver,myScore,oppScore,myId,isHost,room.playerIds,room.hostId]);
 
   const handleCell=useCallback((row:number,col:number)=>{
     if(room.status!=="playing"||!isMyTurn||gameOver)return;

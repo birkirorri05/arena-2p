@@ -113,10 +113,10 @@ export default function MancalaBoard({ room }: Props) {
     if (!gameOver || useGameStore.getState().result) return;
     const s1 = display[6], s2 = display[13];
     const winnerId = s1 > s2 ? room.hostId
-      : s1 < s2 ? (room.guestId ?? null)
+      : s1 < s2 ? (room.playerIds[1] ?? null)
       : null;
     useGameStore.getState().setResult({ winnerId, reason: "most seeds" });
-  }, [gameOver, display, room.hostId, room.guestId]);
+  }, [gameOver, display, room.hostId, room.playerIds]);
 
   const handleClick = useCallback((pit: number) => {
     if (room.status !== "playing" || !validPits.includes(pit)) return;

@@ -87,13 +87,13 @@ export default function ChessBoard({ room }: Props) {
       // The player whose turn it is lost
       const loserColor = game.turn();
       const loserIsHost = loserColor === "w";
-      winnerId = loserIsHost ? room.guestId : room.hostId;
+      winnerId = loserIsHost ? room.playerIds[1] : room.hostId;
       reason = "checkmate";
     } else if (game.isResign?.()) {
       // handled by server
     }
     useGameStore.getState().setResult({ winnerId, reason });
-  }, [game, room.hostId, room.guestId]);
+  }, [game, room.hostId, room.playerIds]);
 
   const handleSquareClick = useCallback(
     (sq: Square) => {

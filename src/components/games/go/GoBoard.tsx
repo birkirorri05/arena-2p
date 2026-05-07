@@ -199,12 +199,12 @@ export default function GoBoard({ room }: Props) {
     const score = computeScore(gs.grid);
     const bScore = score.B;
     const wScore = score.W + KOMI;
-    const winnerId = bScore > wScore ? room.hostId : (room.guestId ?? null);
+    const winnerId = bScore > wScore ? room.hostId : (room.playerIds[1] ?? null);
     useGameStore.getState().setResult({
       winnerId,
       reason: `B ${bScore} – W ${wScore.toFixed(1)}`,
     });
-  }, [gs.passes, gs.grid, room.hostId, room.guestId]);
+  }, [gs.passes, gs.grid, room.hostId, room.playerIds]);
 
   const emitMove = useCallback((payload: MovePayload) => {
     getSocket().emit("game:move", room.id, { playerId: myId ?? "", timestamp: Date.now(), payload });

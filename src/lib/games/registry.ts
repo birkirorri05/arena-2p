@@ -3,6 +3,7 @@ import type { GameId, GameMeta } from "@/types/game";
 const g = (a: string, b: string) => `linear-gradient(135deg,${a},${b})`;
 
 export const GAME_REGISTRY: Record<GameId, GameMeta> = {
+  // ── Board games (2-player) ──────────────────────────────────────────────────
   chess: {
     id: "chess", name: "Chess",
     description: "The classic game of kings. Checkmate your opponent.",
@@ -74,6 +75,114 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     tags: ["board", "classic", "strategy"],
     component: "mancala/MancalaBoard",
     color: g("#92400e", "#3b1a08"),
+  },
+  battleship: {
+    id: "battleship", name: "Battleship",
+    description: "Place your fleet and sink your opponent's ships.",
+    minPlayers: 2, maxPlayers: 2, estimatedMinutes: 20,
+    tags: ["board", "strategy", "classic"],
+    component: "battleship/BattleshipBoard",
+    color: g("#1e40af", "#0f172a"),
+  },
+
+  // ── Card games ────────────────────────────────────────────────────────────
+  war: {
+    id: "war", name: "War",
+    description: "Flip cards and battle. Highest card wins the pile.",
+    minPlayers: 2, maxPlayers: 2, estimatedMinutes: 15,
+    tags: ["card", "classic"],
+    component: "war/WarBoard",
+    color: g("#dc2626", "#7f1d1d"),
+  },
+  blackjack: {
+    id: "blackjack", name: "Blackjack",
+    description: "Beat the dealer. Hit or stand to reach 21.",
+    minPlayers: 2, maxPlayers: 6, estimatedMinutes: 20,
+    tags: ["card", "classic"],
+    component: "_stub",
+    color: g("#15803d", "#052e16"),
+  },
+  uno: {
+    id: "uno", name: "Uno",
+    description: "Match colors and numbers. First to empty their hand wins.",
+    minPlayers: 2, maxPlayers: 4, estimatedMinutes: 30,
+    tags: ["card", "classic", "action"],
+    component: "_stub",
+    color: g("#dc2626", "#7c2d12"),
+  },
+  crazyeights: {
+    id: "crazyeights", name: "Crazy Eights",
+    description: "Play matching suit or rank. Eights are wild!",
+    minPlayers: 2, maxPlayers: 4, estimatedMinutes: 20,
+    tags: ["card", "classic"],
+    component: "_stub",
+    color: g("#7c3aed", "#3b0764"),
+  },
+  gofish: {
+    id: "gofish", name: "Go Fish",
+    description: "Collect sets of four by asking opponents for cards.",
+    minPlayers: 2, maxPlayers: 4, estimatedMinutes: 15,
+    tags: ["card", "classic"],
+    component: "_stub",
+    color: g("#0369a1", "#082f49"),
+  },
+  poker: {
+    id: "poker", name: "Poker",
+    description: "Texas Hold'em. Bluff, bet, and read the table.",
+    minPlayers: 2, maxPlayers: 6, estimatedMinutes: 45,
+    tags: ["card", "strategy", "classic"],
+    component: "_stub",
+    color: g("#166534", "#052e16"),
+  },
+  snap: {
+    id: "snap", name: "Snap",
+    description: "React fast — shout Snap when matching cards appear!",
+    minPlayers: 2, maxPlayers: 4, estimatedMinutes: 10,
+    tags: ["card", "classic", "action"],
+    component: "_stub",
+    color: g("#ea580c", "#431407"),
+  },
+  hearts: {
+    id: "hearts", name: "Hearts",
+    description: "Avoid hearts and the Queen of Spades. Shoot the moon!",
+    minPlayers: 4, maxPlayers: 4, estimatedMinutes: 30,
+    tags: ["card", "strategy", "classic"],
+    component: "_stub",
+    color: g("#be185d", "#500724"),
+  },
+  rummy: {
+    id: "rummy", name: "Rummy",
+    description: "Form sets and runs. First to empty your hand wins.",
+    minPlayers: 2, maxPlayers: 4, estimatedMinutes: 30,
+    tags: ["card", "classic"],
+    component: "_stub",
+    color: g("#d97706", "#451a03"),
+  },
+
+  // ── Multi-player extras ───────────────────────────────────────────────────
+  yahtzee: {
+    id: "yahtzee", name: "Yahtzee",
+    description: "Roll dice, score combinations. Get Yahtzee for the jackpot!",
+    minPlayers: 2, maxPlayers: 6, estimatedMinutes: 30,
+    tags: ["dice", "classic"],
+    component: "_stub",
+    color: g("#0891b2", "#083344"),
+  },
+  liarsdice: {
+    id: "liarsdice", name: "Liar's Dice",
+    description: "Bluff with hidden dice. Call out liars or face the forfeit.",
+    minPlayers: 2, maxPlayers: 6, estimatedMinutes: 20,
+    tags: ["dice", "strategy", "classic"],
+    component: "_stub",
+    color: g("#6d28d9", "#1e0750"),
+  },
+  dominoes: {
+    id: "dominoes", name: "Dominoes",
+    description: "Match tiles end-to-end. Block your opponents and clear your hand.",
+    minPlayers: 2, maxPlayers: 4, estimatedMinutes: 20,
+    tags: ["board", "classic"],
+    component: "_stub",
+    color: g("#374151", "#030712"),
   },
 };
 

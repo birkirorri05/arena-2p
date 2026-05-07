@@ -97,7 +97,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
   blackjack: {
     id: "blackjack", name: "Blackjack",
     description: "Beat the dealer. Hit or stand to reach 21.",
-    minPlayers: 2, maxPlayers: 6, estimatedMinutes: 20,
+    minPlayers: 1, maxPlayers: 6, estimatedMinutes: 20,
     tags: ["card", "classic"],
     component: "blackjack/BlackjackBoard",
     color: g("#15803d", "#052e16"),

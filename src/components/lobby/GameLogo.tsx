@@ -51,39 +51,41 @@ function SphereGrad({ id, light, dark }: { id: string; light: string; dark: stri
 
 // ── Chess ────────────────────────────────────────────────────────────────────
 function ChessLogo() {
+  const L = '#f0d9b5'; // light square (chess.com cream)
+  const D = '#b58863'; // dark square  (chess.com brown)
+
+  // Standard starting position — row 0 = black back rank, row 7 = white back rank
+  const pos = [
+    ['♜','♞','♝','♛','♚','♝','♞','♜'],
+    ['♟','♟','♟','♟','♟','♟','♟','♟'],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['♙','♙','♙','♙','♙','♙','♙','♙'],
+    ['♖','♘','♗','♕','♔','♗','♘','♖'],
+  ];
+
   return (
     <svg viewBox={VB} className={CLS}>
-      <Defs>
-        <SphereGrad id="wp" light="#ffffff" dark="#b0b0b0"/>
-        <SphereGrad id="bp" light="#555555" dark="#111111"/>
-        <linearGradient id="brd" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="rgba(255,255,255,0.15)"/>
-          <stop offset="100%" stopColor="rgba(255,255,255,0.03)"/>
-        </linearGradient>
-      </Defs>
-      {/* Board corner */}
-      {[0,1,2,3].flatMap(r=>[0,1,2,3].map(c=>(r+c)%2===0?
-        <rect key={`${r}${c}`} x={c*10} y={r*10} width={10} height={10} fill="url(#brd)"/> : null))}
-      <rect x={0} y={0} width={40} height={40} fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth={0.5}/>
-      {/* White king — right side, large */}
-      <g opacity={0.97}>
-        {/* Cross */}
-        <rect x={54} y={8}  width={5} height={16} rx={2} fill="url(#wp)"/>
-        <rect x={48} y={12} width={17} height={5} rx={2} fill="url(#wp)"/>
-        {/* Collar */}
-        <rect x={46} y={24} width={21} height={6} rx={2} fill="url(#wp)"/>
-        {/* Body */}
-        <path d="M49,30 Q43,42 44,54 L69,54 Q70,42 64,30Z" fill="url(#wp)"/>
-        {/* Base */}
-        <rect x={40} y={54} width={33} height={7} rx={2.5} fill="url(#wp)"/>
-        <rect x={37} y={61} width={39} height={8} rx={3.5} fill="url(#wp)"/>
-      </g>
-      {/* Black pawn — left side */}
-      <g opacity={0.85}>
-        <circle cx={16} cy={52} r={8} fill="url(#bp)"/>
-        <path d="M11,60 Q8,70 10,73 L22,73 Q24,70 21,60Z" fill="url(#bp)"/>
-        <rect x={8} y={73} width={24} height={4.5} rx={2} fill="url(#bp)"/>
-      </g>
+      {/* 8×8 board — squares are 10×10 */}
+      {pos.map((row, r) => row.map((_, c) => (
+        <rect key={`s${r}${c}`} x={c*10} y={r*10} width={10} height={10}
+          fill={(r+c)%2===0 ? L : D}/>
+      )))}
+      {/* Pieces — Unicode chess symbols at fontSize 9, outlined for legibility */}
+      {pos.map((row, r) => row.map((p, c) => !p ? null : (
+        <text key={`p${r}${c}`}
+          x={c*10+5} y={r*10+8.5}
+          textAnchor="middle"
+          fontSize={9}
+          fontFamily="serif"
+          fill={r < 2 ? '#1c1008' : '#fffbf0'}
+          stroke={r < 2 ? 'rgba(255,220,160,0.55)' : 'rgba(0,0,0,0.75)'}
+          strokeWidth={0.4}
+          style={{paintOrder:'stroke fill'}}
+        >{p}</text>
+      )))}
     </svg>
   );
 }

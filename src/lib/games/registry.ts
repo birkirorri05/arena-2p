@@ -139,7 +139,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     description: "React fast — shout Snap when matching cards appear!",
     minPlayers: 2, maxPlayers: 4, estimatedMinutes: 10,
     tags: ["card", "classic", "action"],
-    component: "_stub",
+    component: "snap/SnapBoard",
     color: g("#ea580c", "#431407"),
   },
   hearts: {

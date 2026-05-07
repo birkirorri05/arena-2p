@@ -131,7 +131,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     description: "Texas Hold'em. Bluff, bet, and read the table.",
     minPlayers: 2, maxPlayers: 6, estimatedMinutes: 45,
     tags: ["card", "strategy", "classic"],
-    component: "_stub",
+    component: "poker/PokerBoard",
     color: g("#166534", "#052e16"),
   },
   snap: {

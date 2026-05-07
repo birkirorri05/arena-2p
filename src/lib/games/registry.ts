@@ -12,12 +12,12 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     component: "chess/ChessBoard",
     color: g("#334155", "#0f172a"),
   },
-  scrabble: {
-    id: "scrabble", name: "Scrabble",
-    description: "Build words, rack up points.",
+  wordgrid: {
+    id: "wordgrid", name: "Word Grid",
+    description: "Place letter tiles on the board to form words and rack up points.",
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 45,
     tags: ["board", "classic"],
-    component: "scrabble/ScrabbleBoard",
+    component: "wordgrid/WordGridBoard",
     color: g("#b45309", "#78350f"),
   },
   backgammon: {
@@ -44,12 +44,12 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     component: "checkers/CheckersBoard",
     color: g("#991b1b", "#450a0a"),
   },
-  connect4: {
-    id: "connect4", name: "Connect 4",
-    description: "Drop discs, get four in a row.",
+  fourinarow: {
+    id: "fourinarow", name: "Four in a Row",
+    description: "Drop discs into the grid. First to line up four wins.",
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 10,
     tags: ["board", "classic"],
-    component: "connect4/Connect4Board",
+    component: "fourinarow/FourInARowBoard",
     color: g("#1d4ed8", "#312e81"),
   },
   tictactoe: {
@@ -76,12 +76,12 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     component: "mancala/MancalaBoard",
     color: g("#92400e", "#3b1a08"),
   },
-  battleship: {
-    id: "battleship", name: "Battleship",
+  seabattle: {
+    id: "seabattle", name: "Sea Battle",
     description: "Place your fleet and sink your opponent's ships.",
     minPlayers: 2, maxPlayers: 2, estimatedMinutes: 20,
     tags: ["board", "strategy", "classic"],
-    component: "battleship/BattleshipBoard",
+    component: "seabattle/SeaBattleBoard",
     color: g("#1e40af", "#0f172a"),
   },
 
@@ -102,9 +102,9 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     component: "_stub",
     color: g("#15803d", "#052e16"),
   },
-  uno: {
-    id: "uno", name: "Uno",
-    description: "Match colors and numbers. First to empty their hand wins.",
+  wildcards: {
+    id: "wildcards", name: "Wild Cards",
+    description: "Match colors and numbers. Play action cards to shake things up.",
     minPlayers: 2, maxPlayers: 4, estimatedMinutes: 30,
     tags: ["card", "classic", "action"],
     component: "_stub",
@@ -160,9 +160,9 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
   },
 
   // ── Multi-player extras ───────────────────────────────────────────────────
-  yahtzee: {
-    id: "yahtzee", name: "Yahtzee",
-    description: "Roll dice, score combinations. Get Yahtzee for the jackpot!",
+  fivedice: {
+    id: "fivedice", name: "Five Dice",
+    description: "Roll five dice and score combinations. Roll five of a kind for the jackpot!",
     minPlayers: 2, maxPlayers: 6, estimatedMinutes: 30,
     tags: ["dice", "classic"],
     component: "_stub",

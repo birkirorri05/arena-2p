@@ -1,18 +1,18 @@
 export type GameId =
   | "chess"
-  | "scrabble"
+  | "wordgrid"
   | "backgammon"
   | "go"
   | "checkers"
-  | "connect4"
+  | "fourinarow"
   | "tictactoe"
   | "reversi"
   | "mancala"
-  | "battleship"
+  | "seabattle"
   // card games
   | "war"
   | "blackjack"
-  | "uno"
+  | "wildcards"
   | "crazyeights"
   | "gofish"
   | "poker"
@@ -20,7 +20,7 @@ export type GameId =
   | "hearts"
   | "rummy"
   // multi-player extras
-  | "yahtzee"
+  | "fivedice"
   | "liarsdice"
   | "dominoes";
 

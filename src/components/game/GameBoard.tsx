@@ -17,15 +17,15 @@ interface GameBoardProps {
 // Games are loaded lazily — each game component can be large (canvas, assets)
 const GAME_COMPONENTS: Record<string, React.ComponentType<{ room: GameRoom }>> = {
   chess: dynamic(() => import("@/components/games/chess/ChessBoard")),
-  scrabble: dynamic(() => import("@/components/games/scrabble/ScrabbleBoard")),
+  wordgrid: dynamic(() => import("@/components/games/scrabble/ScrabbleBoard")),
   backgammon: dynamic(() => import("@/components/games/backgammon/BackgammonBoard")),
   go: dynamic(() => import("@/components/games/go/GoBoard")),
   checkers: dynamic(() => import("@/components/games/checkers/CheckersBoard")),
-  connect4: dynamic(() => import("@/components/games/connect4/Connect4Board")),
+  fourinarow: dynamic(() => import("@/components/games/connect4/Connect4Board")),
   tictactoe: dynamic(() => import("@/components/games/tictactoe/TicTacToeBoard")),
   reversi: dynamic(() => import("@/components/games/reversi/ReversiBoard")),
   mancala: dynamic(() => import("@/components/games/mancala/MancalaBoard")),
-  battleship: dynamic(() => import("@/components/games/battleship/BattleshipBoard")),
+  seabattle: dynamic(() => import("@/components/games/battleship/BattleshipBoard")),
   war: dynamic(() => import("@/components/games/war/WarBoard")),
 };
 

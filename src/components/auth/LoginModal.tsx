@@ -1,15 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useGameStore } from "@/store/gameStore";
 
 export function LoginModal() {
   const myPlayerId = useGameStore((s) => s.myPlayerId);
+  const hydrated   = useGameStore((s) => s.hydrated);
   const setMyPlayer  = useGameStore((s) => s.setMyPlayer);
   const [name, setName] = useState("");
 
-  if (myPlayerId) return null;
+  useEffect(() => {
+    setName(localStorage.getItem("arena_player_name") ?? "");
+  }, []);
+
+  if (!hydrated || myPlayerId) return null;
 
   function submit() {
     const trimmed = name.trim();

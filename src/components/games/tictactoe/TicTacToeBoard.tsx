@@ -84,7 +84,7 @@ export default function TicTacToeBoard({ room }: Props) {
         payload: { idx, mark: myMark },
       });
     },
-    [isMyTurn, board, winner, myMark, myId, room.id]
+    [isMyTurn, board, winner, myMark, myId, room.id, room.status]
   );
 
   return (

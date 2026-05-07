@@ -220,7 +220,7 @@ export default function GoBoard({ room }: Props) {
     stateRef.current = newState;
     setGs({ ...newState });
     emitMove(payload);
-  }, [myTurn, gs.passes, emitMove]);
+  }, [myTurn, gs.passes, emitMove, room.status]);
 
   const handlePass = useCallback(() => {
     if (room.status !== "playing" || !myTurn || gs.passes >= 2) return;
@@ -229,7 +229,7 @@ export default function GoBoard({ room }: Props) {
     stateRef.current = newState;
     setGs({ ...newState });
     emitMove(payload);
-  }, [myTurn, gs.passes, emitMove]);
+  }, [myTurn, gs.passes, emitMove, room.status]);
 
   const canPlace = useCallback((x: number, y: number): boolean => {
     if (!myTurn || gs.grid[y][x] !== null || gs.passes >= 2) return false;

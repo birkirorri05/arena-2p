@@ -149,7 +149,7 @@ export default function ScrabbleBoard({room}:Props) {
     setPending(p=>[...p,{row,col,letter,rackIdx:selIdx}]);
     setMyRack(r=>{const n=[...r];n[selIdx]="";return n;});
     setSelIdx(null);
-  },[isMyTurn,gameOver,pending,selIdx,board,myRack]);
+  },[isMyTurn,gameOver,pending,selIdx,board,myRack,room.status]);
 
   const handleSubmit=useCallback(()=>{
     if(room.status!=="playing"||!isMyTurn||!pending.length||gameOver)return;
@@ -163,7 +163,7 @@ export default function ScrabbleBoard({room}:Props) {
     setHostTurn(v=>!v);setPasses(0);setLastWords(res.words);setError("");setPending([]);setSelIdx(null);
     getSocket().emit("game:move",room.id,{playerId:myId??"",timestamp:Date.now(),
       payload:{type:"place",tiles:pending.map(t=>({row:t.row,col:t.col,letter:t.letter})),score:res.score,tilesDrawn:toDraw} satisfies PP});
-  },[isMyTurn,pending,gameOver,board,bag,drawn,bagLeft,myId,room.id]);
+  },[isMyTurn,pending,gameOver,board,bag,drawn,bagLeft,myId,room.id,room.status]);
 
   const handleRecall=useCallback(()=>{
     setMyRack(prev=>{const n=prev.filter(l=>l!=="");for(const t of pending)n.push(t.letter);return n;});
@@ -175,7 +175,7 @@ export default function ScrabbleBoard({room}:Props) {
     if(pending.length){setMyRack(prev=>{const n=prev.filter(l=>l!=="");for(const t of pending)n.push(t.letter);return n;});setPending([]);setSelIdx(null);}
     setHostTurn(v=>!v);setPasses(v=>v+1);setError("");
     getSocket().emit("game:move",room.id,{playerId:myId??"",timestamp:Date.now(),payload:{type:"pass"}});
-  },[isMyTurn,gameOver,pending,myId,room.id]);
+  },[isMyTurn,gameOver,pending,myId,room.id,room.status]);
 
   const statusLine=gameOver
     ?`Game over — ${myScore>oppScore?"You win!":myScore<oppScore?"Opponent wins!":"Draw"}`

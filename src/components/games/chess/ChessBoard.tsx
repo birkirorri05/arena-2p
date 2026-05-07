@@ -132,7 +132,7 @@ export default function ChessBoard({ room }: Props) {
         }
       }
     },
-    [game, selected, legalTargets, myColor, promotion]
+    [game, selected, legalTargets, myColor, promotion, room.status]
   );
 
   function selectSquare(sq: Square) {

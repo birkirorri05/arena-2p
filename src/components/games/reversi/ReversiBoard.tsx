@@ -153,7 +153,7 @@ export default function ReversiBoard({ room }: Props) {
         payload: { row, col, color: myColor },
       });
     },
-    [isMyTurn, gameOver, board, myColor, myLegalSet, myId, room.id]
+    [isMyTurn, gameOver, board, myColor, myLegalSet, myId, room.id, room.status]
   );
 
   const handlePass = useCallback(() => {
@@ -165,7 +165,7 @@ export default function ReversiBoard({ room }: Props) {
       timestamp: Date.now(),
       payload: { row: -1, col: -1, color: myColor },
     });
-  }, [isMyTurn, gameOver, legalMoves.length, myId, room.id]);
+  }, [isMyTurn, gameOver, legalMoves.length, myId, room.id, room.status]);
 
   const status = gameOver
     ? counts.b === counts.w

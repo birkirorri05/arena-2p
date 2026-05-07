@@ -19,6 +19,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEve
 
 // In-memory store — replace with Redis for production
 const rooms = new Map<string, GameRoom>();
+const playerNames = new Map<string, string>(); // playerId → name
 
 io.use((socket, next) => {
   const { playerId, playerName } = socket.handshake.auth as SocketData;
@@ -30,6 +31,7 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
   const { playerId, playerName } = socket.data;
+  playerNames.set(playerId, playerName);
 
   socket.on("room:create", (gameId, callback) => {
     const room: GameRoom = {
@@ -49,7 +51,17 @@ io.on("connection", (socket) => {
 
   socket.on("room:join", (roomId, callback) => {
     const room = rooms.get(roomId);
-    if (!room || room.status !== "waiting" || room.guestId) {
+    if (!room) return callback(null);
+
+    // Reconnection — host or guest already in this room
+    if (room.hostId === playerId || room.guestId === playerId) {
+      socket.join(roomId);
+      socket.emit("room:players", getPlayers(room));
+      return callback(room);
+    }
+
+    // New guest joining
+    if (room.status !== "waiting" || room.guestId) {
       return callback(null);
     }
     room.guestId = playerId;
@@ -118,9 +130,9 @@ io.on("connection", (socket) => {
 
   function getPlayers(room: GameRoom) {
     return [
-      { id: room.hostId, name: playerName, slot: "host" as const, connected: true },
+      { id: room.hostId, name: playerNames.get(room.hostId) ?? "Host", slot: "host" as const, connected: true },
       ...(room.guestId
-        ? [{ id: room.guestId, name: "Opponent", slot: "guest" as const, connected: true }]
+        ? [{ id: room.guestId, name: playerNames.get(room.guestId) ?? "Guest", slot: "guest" as const, connected: true }]
         : []),
     ];
   }

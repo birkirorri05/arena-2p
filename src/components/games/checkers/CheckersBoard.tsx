@@ -210,7 +210,7 @@ export default function CheckersBoard({ room }: Props) {
       );
       setSelected(isMovable ? [row, col] : null);
     },
-    [isMyTurn, gameOver, board, selected, allMoves, myColor, myId, room.id]
+    [isMyTurn, gameOver, board, selected, allMoves, myColor, myId, room.id, room.status]
   );
 
   const status = gameOver

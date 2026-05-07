@@ -139,7 +139,7 @@ export default function Connect4Board({ room }: Props) {
         payload: { col, color: myColor },
       });
     },
-    [isMyTurn, board, winner, isDraw, myColor, myId, room.id]
+    [isMyTurn, board, winner, isDraw, myColor, myId, room.id, room.status]
   );
 
   const status = winner
@@ -154,50 +154,44 @@ export default function Connect4Board({ room }: Props) {
     <div className="flex flex-col items-center gap-4">
       <p className="text-sm text-arena-text-muted">{status}</p>
 
-      {/* Column drop buttons */}
-      <div className="flex gap-1">
-        {Array.from({ length: COLS }, (_, col) => (
-          <button
-            key={col}
-            onClick={() => handleColClick(col)}
-            disabled={!isMyTurn || !!winner || isDraw || board[0][col] !== null}
-            className={cn(
-              "flex h-7 w-12 items-center justify-center rounded text-arena-text-muted transition-colors",
-              isMyTurn && !winner && !isDraw && board[0][col] === null
-                ? "hover:bg-arena-surface cursor-pointer"
-                : "opacity-0 pointer-events-none"
-            )}
-          >
-            ▼
-          </button>
-        ))}
-      </div>
-
-      {/* Board */}
-      <div className="rounded-xl bg-blue-700 p-2 shadow-lg">
-        <div className="grid gap-1.5" style={{ gridTemplateColumns: `repeat(${COLS}, 1fr)` }}>
-          {Array.from({ length: ROWS }, (_, row) =>
-            Array.from({ length: COLS }, (_, col) => {
-              const cell = board[row][col];
-              const isWinCell = winLine.some(([r, c]) => r === row && c === col);
-              return (
-                <div
-                  key={`${row}-${col}`}
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-900"
-                >
-                  <div
-                    className={cn(
-                      "h-10 w-10 rounded-full transition-all duration-150",
-                      !cell && "bg-blue-950",
-                      cell === "r" && "bg-red-500",
-                      cell === "y" && "bg-yellow-400",
-                      isWinCell && "ring-4 ring-white scale-110"
-                    )}
-                  />
-                </div>
-              );
-            })
-          )}
+      {/* Board — click any cell in a column to drop */}
+      <div className="rounded-xl bg-blue-700 p-2 shadow-lg group/board">
+        <div className="flex gap-1.5">
+          {Array.from({ length: COLS }, (_, col) => {
+            const canDrop = isMyTurn && !winner && !isDraw && board[0][col] === null;
+            return (
+              <button
+                key={col}
+                onClick={() => handleColClick(col)}
+                disabled={!canDrop}
+                className={cn(
+                  "flex flex-col gap-1.5 rounded-lg p-0",
+                  canDrop ? "cursor-pointer hover:brightness-125" : "cursor-default"
+                )}
+              >
+                {Array.from({ length: ROWS }, (_, row) => {
+                  const cell = board[row][col];
+                  const isWinCell = winLine.some(([r, c]) => r === row && c === col);
+                  return (
+                    <div
+                      key={row}
+                      className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-900"
+                    >
+                      <div
+                        className={cn(
+                          "h-10 w-10 rounded-full transition-all duration-150",
+                          !cell && "bg-blue-950",
+                          cell === "r" && "bg-red-500",
+                          cell === "y" && "bg-yellow-400",
+                          isWinCell && "ring-4 ring-white scale-110"
+                        )}
+                      />
+                    </div>
+                  );
+                })}
+              </button>
+            );
+          })}
         </div>
       </div>
 

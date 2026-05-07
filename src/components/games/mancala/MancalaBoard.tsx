@@ -129,7 +129,7 @@ export default function MancalaBoard({ room }: Props) {
       playerId: myId ?? "", timestamp: Date.now(),
       payload: { pit, nextP1Turn } satisfies MovePayload,
     });
-  }, [board, p1Turn, validPits, myId, room.id]);
+  }, [board, p1Turn, validPits, myId, room.id, room.status]);
 
   const s1 = display[6], s2 = display[13];
   const status = gameOver

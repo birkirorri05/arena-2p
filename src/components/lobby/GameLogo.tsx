@@ -48,31 +48,6 @@ function SphereGrad({ id, light, dark }: { id: string; light: string; dark: stri
   );
 }
 
-// Playing card shape helper
-function PlayingCard({ x, y, w, h, rot, fill, stroke, label, suit, suitColor }:
-  { x:number; y:number; w:number; h:number; rot?:string; fill?:string; stroke?:string; label:string; suit:string; suitColor:string }) {
-  const g = rot ? `rotate(${rot})` : undefined;
-  return (
-    <g transform={g}>
-      <rect x={x} y={y} width={w} height={h} rx={2} fill={fill??"white"} stroke={stroke??"#ccc"} strokeWidth={0.6}/>
-      <text x={x+3}   y={y+8}  fontSize={6} fontWeight="bold" fill={suitColor} fontFamily="serif">{label}</text>
-      <text x={x+3}   y={y+14} fontSize={7} fill={suitColor}>{suit}</text>
-      <text x={x+w/2} y={y+h/2+5} fontSize={16} textAnchor="middle" fill={suitColor} fontFamily="serif">{suit}</text>
-      <text x={x+w-3} y={y+h-3} fontSize={6} fontWeight="bold" fill={suitColor} textAnchor="end" fontFamily="serif"
-        transform={`rotate(180,${x+w/2},${y+h/2})`}>{label}</text>
-    </g>
-  );
-}
-
-// Isometric die face
-function DieFace({ pts, fill, pips, pipFill }: { pts:string; fill:string; pips:[number,number][]; pipFill:string }) {
-  return (
-    <>
-      <polygon points={pts} fill={fill} stroke="rgba(0,0,0,0.25)" strokeWidth={0.5}/>
-      {pips.map(([px,py],i) => <circle key={i} cx={px} cy={py} r={1.8} fill={pipFill}/>)}
-    </>
-  );
-}
 
 // ── Chess ────────────────────────────────────────────────────────────────────
 function ChessLogo() {
@@ -382,21 +357,31 @@ function SeaBattleLogo() {
 }
 
 // ── Shared card helper ─────────────────────────────────────────────────────────
+// Bottom-right corner: duplicate the top-left text elements and rotate 180° around
+// the card centre. A point originally at (x+3, y+9) maps to (x+23, y+27) — correct
+// bottom-right position — because: new_x = 2*(x+13)-(x+3) = x+23, new_y = 2*(y+18)-(y+9) = y+27.
 function CardStack({ cards }: { cards: Array<{x:number;y:number;r?:number;rank:string;suit:string;color:string}> }) {
   return (
     <>
-      {cards.map(({x,y,r,rank,suit,color},i)=>(
-        <g key={i} transform={r?`rotate(${r},${x+13},${y+18})`:"rotate(0)"}>
-          <rect x={x} y={y} width={26} height={36} rx={2.5}
-            fill="white" stroke="#d1d5db" strokeWidth={0.7}
-            style={{filter:"drop-shadow(1px 2px 3px rgba(0,0,0,0.4))"}}/>
-          <text x={x+4}   y={y+10} fontSize={7}  fontWeight="bold" fill={color}>{rank}</text>
-          <text x={x+4}   y={y+17} fontSize={8}  fill={color}>{suit}</text>
-          <text x={x+13}  y={y+27} textAnchor="middle" fontSize={15} fill={color}>{suit}</text>
-          <text x={x+22}  y={y+35} fontSize={7}  fontWeight="bold" fill={color}
-            transform={`rotate(180,${x+13},${y+18})`}>{rank}</text>
-        </g>
-      ))}
+      {cards.map(({x,y,r,rank,suit,color},i)=>{
+        const cx=x+13, cy=y+18;
+        return (
+          <g key={i} transform={r?`rotate(${r},${cx},${cy})`:undefined}
+            style={{filter:"drop-shadow(1px 2px 3px rgba(0,0,0,0.4))"}}>
+            <rect x={x} y={y} width={26} height={36} rx={2.5} fill="white" stroke="#d1d5db" strokeWidth={0.7}/>
+            {/* Top-left corner */}
+            <text x={x+3} y={y+9}  fontSize={7} fontWeight="bold" fill={color} fontFamily="serif">{rank}</text>
+            <text x={x+3} y={y+15} fontSize={7} fill={color}>{suit}</text>
+            {/* Centre suit */}
+            <text x={cx} y={cy+5} textAnchor="middle" fontSize={15} fill={color}>{suit}</text>
+            {/* Bottom-right corner — same labels rotated 180° around card centre */}
+            <g transform={`rotate(180,${cx},${cy})`}>
+              <text x={x+3} y={y+9}  fontSize={7} fontWeight="bold" fill={color} fontFamily="serif">{rank}</text>
+              <text x={x+3} y={y+15} fontSize={7} fill={color}>{suit}</text>
+            </g>
+          </g>
+        );
+      })}
     </>
   );
 }
@@ -549,48 +534,66 @@ function RummyLogo() {
         {x:27, y:6,  r:0,   rank:"7", suit:"♣", color:"#166534"},
         {x:39, y:8,  r:12,  rank:"8", suit:"♦", color:"#dc2626"},
         {x:50, y:14, r:24,  rank:"9", suit:"♦", color:"#dc2626"},
-      ].map(({x,y,r,rank,suit,color},i)=>(
-        <g key={i} transform={`rotate(${r},${x+13},${y+18})`}
-          style={{filter:"drop-shadow(1px 2px 3px rgba(0,0,0,0.4))"}}>
-          <rect x={x} y={y} width={26} height={36} rx={2.5} fill="white" stroke="#d1d5db" strokeWidth={0.7}/>
-          <text x={x+4} y={y+11} fontSize={7}  fontWeight="bold" fill={color}>{rank}</text>
-          <text x={x+4} y={y+18} fontSize={8}  fill={color}>{suit}</text>
-          <text x={x+13} y={y+27} textAnchor="middle" fontSize={13} fill={color}>{suit}</text>
-        </g>
-      ))}
+      ].map(({x,y,r,rank,suit,color},i)=>{
+        const cx=x+13, cy=y+18;
+        return (
+          <g key={i} transform={`rotate(${r},${cx},${cy})`}
+            style={{filter:"drop-shadow(1px 2px 3px rgba(0,0,0,0.4))"}}>
+            <rect x={x} y={y} width={26} height={36} rx={2.5} fill="white" stroke="#d1d5db" strokeWidth={0.7}/>
+            <text x={x+3} y={y+9}  fontSize={7} fontWeight="bold" fill={color} fontFamily="serif">{rank}</text>
+            <text x={x+3} y={y+15} fontSize={7} fill={color}>{suit}</text>
+            <text x={cx}  y={cy+5} textAnchor="middle" fontSize={13} fill={color}>{suit}</text>
+            <g transform={`rotate(180,${cx},${cy})`}>
+              <text x={x+3} y={y+9}  fontSize={7} fontWeight="bold" fill={color} fontFamily="serif">{rank}</text>
+              <text x={x+3} y={y+15} fontSize={7} fill={color}>{suit}</text>
+            </g>
+          </g>
+        );
+      })}
     </svg>
   );
 }
 
 // ── Five Dice ─────────────────────────────────────────────────────────────────
-// Isometric die — top/right/left faces
-function IsoDie({ ox, oy, sc, top, right, left, v }:
-  { ox:number; oy:number; sc:number; top:string; right:string; left:string; v:number }) {
-  const pips1:number[][]  = [[0.5,0.5]];
-  const pips2:number[][]  = [[0.25,0.3],[0.75,0.7]];
-  const pips3:number[][]  = [[0.25,0.25],[0.5,0.5],[0.75,0.75]];
-  const pips5:number[][]  = [[0.25,0.25],[0.75,0.25],[0.5,0.5],[0.25,0.75],[0.75,0.75]];
-  const pips6:number[][]  = [[0.25,0.2],[0.75,0.2],[0.25,0.5],[0.75,0.5],[0.25,0.8],[0.75,0.8]];
-  const allPips = [pips1,pips2,pips3,pips2,pips5,pips6];
-  const pts = allPips[Math.min(v-1,5)];
-  const h=sc*0.6, w=sc;
-  // Top face
+// Isometric die with pips projected onto all three visible faces.
+//
+// Face coordinate systems (px,py each in [0,1]):
+//   Top   — diamond face:   cx = ox+(px+py)*(w/2),          cy = oy+(-px+py)*(h/2)
+//   Right — parallelogram:  cx = ox+w/2+px*(w/2),           cy = oy+h/2-px*(h/2)+py*h
+//   Left  — parallelogram:  cx = ox+px*(w/2),                cy = oy+px*(h/2)+py*h
+const PIPS: Record<number,number[][]> = {
+  1: [[0.5,0.5]],
+  2: [[0.28,0.28],[0.72,0.72]],
+  3: [[0.22,0.22],[0.5,0.5],[0.78,0.78]],
+  4: [[0.25,0.25],[0.75,0.25],[0.25,0.75],[0.75,0.75]],
+  5: [[0.25,0.25],[0.75,0.25],[0.5,0.5],[0.25,0.75],[0.75,0.75]],
+  6: [[0.25,0.18],[0.75,0.18],[0.25,0.5],[0.75,0.5],[0.25,0.82],[0.75,0.82]],
+};
+
+function IsoDie({ ox, oy, sc, vTop, vRight, vLeft }:
+  { ox:number; oy:number; sc:number; vTop:number; vRight:number; vLeft:number }) {
+  const w=sc, h=sc*0.6, r=sc*0.064;
+  const pd = "rgba(20,20,70,0.85)";
   const T=`${ox},${oy} ${ox+w/2},${oy-h/2} ${ox+w},${oy} ${ox+w/2},${oy+h/2}`;
-  // Right face
   const R=`${ox+w/2},${oy+h/2} ${ox+w},${oy} ${ox+w},${oy+h} ${ox+w/2},${oy+h+h/2}`;
-  // Left face
   const L=`${ox},${oy} ${ox+w/2},${oy+h/2} ${ox+w/2},${oy+h+h/2} ${ox},${oy+h}`;
   return (
     <>
-      <polygon points={T} fill={top} stroke="rgba(0,0,0,0.2)" strokeWidth={0.5}/>
-      <polygon points={R} fill={right} stroke="rgba(0,0,0,0.2)" strokeWidth={0.5}/>
-      <polygon points={L} fill={left} stroke="rgba(0,0,0,0.2)" strokeWidth={0.5}/>
-      {/* Pips on top face — project into rhombus */}
-      {pts.map(([px,py],i)=>{
-        const cx=ox+(px*w/2)+(py*w/2);
-        const cy=oy-(px*h/2)+(py*h/2);
-        return <circle key={i} cx={cx} cy={cy} r={sc*0.065} fill="rgba(30,30,80,0.8)"/>;
-      })}
+      <polygon points={T} fill="#ffffff" stroke="rgba(0,0,0,0.25)" strokeWidth={0.6}/>
+      <polygon points={R} fill="#cccccc" stroke="rgba(0,0,0,0.25)" strokeWidth={0.6}/>
+      <polygon points={L} fill="#e2e2e2" stroke="rgba(0,0,0,0.25)" strokeWidth={0.6}/>
+      {/* Top face pips */}
+      {(PIPS[vTop]??[]).map(([px,py],i)=>(
+        <circle key={`t${i}`} cx={ox+(px+py)*(w/2)} cy={oy+(-px+py)*(h/2)} r={r} fill={pd}/>
+      ))}
+      {/* Right face pips */}
+      {(PIPS[vRight]??[]).map(([px,py],i)=>(
+        <circle key={`r${i}`} cx={ox+w/2+px*(w/2)} cy={oy+h/2-px*(h/2)+py*h} r={r} fill={pd}/>
+      ))}
+      {/* Left face pips */}
+      {(PIPS[vLeft]??[]).map(([px,py],i)=>(
+        <circle key={`l${i}`} cx={ox+px*(w/2)} cy={oy+px*(h/2)+py*h} r={r} fill={pd}/>
+      ))}
     </>
   );
 }
@@ -598,11 +601,11 @@ function IsoDie({ ox, oy, sc, top, right, left, v }:
 function FiveDiceLogo() {
   return (
     <svg viewBox={VB} className={CLS}>
-      <IsoDie ox={2}  oy={22} sc={22} top="#fff" right="#bbb" left="#ddd" v={5}/>
-      <IsoDie ox={25} oy={14} sc={22} top="#fff" right="#bbb" left="#ddd" v={1}/>
-      <IsoDie ox={48} oy={20} sc={22} top="#fff" right="#bbb" left="#ddd" v={6}/>
-      <IsoDie ox={13} oy={44} sc={22} top="#fff" right="#bbb" left="#ddd" v={3}/>
-      <IsoDie ox={36} oy={44} sc={22} top="#fff" right="#bbb" left="#ddd" v={4}/>
+      <IsoDie ox={2}  oy={22} sc={22} vTop={5} vRight={2} vLeft={4}/>
+      <IsoDie ox={25} oy={14} sc={22} vTop={1} vRight={2} vLeft={3}/>
+      <IsoDie ox={48} oy={20} sc={22} vTop={6} vRight={4} vLeft={2}/>
+      <IsoDie ox={13} oy={44} sc={22} vTop={3} vRight={2} vLeft={1}/>
+      <IsoDie ox={36} oy={44} sc={22} vTop={4} vRight={3} vLeft={6}/>
     </svg>
   );
 }
@@ -617,8 +620,8 @@ function LiarsDiceLogo() {
       <ellipse cx={40} cy={10} rx={18} ry={5} fill="rgba(200,80,30,0.8)"/>
       <ellipse cx={40} cy={10} rx={15} ry={3.5} fill="rgba(80,20,5,0.7)"/>
       {/* Visible dice peeking out */}
-      <IsoDie ox={24} oy={20} sc={16} top="rgba(255,255,255,0.95)" right="rgba(200,200,200,0.9)" left="rgba(230,230,230,0.9)" v={2}/>
-      <IsoDie ox={40} oy={16} sc={16} top="rgba(255,255,255,0.95)" right="rgba(200,200,200,0.9)" left="rgba(230,230,230,0.9)" v={5}/>
+      <IsoDie ox={24} oy={20} sc={16} vTop={2} vRight={3} vLeft={6}/>
+      <IsoDie ox={40} oy={16} sc={16} vTop={5} vRight={4} vLeft={1}/>
       {/* Question marks — "hidden" dice */}
       <text x={26} y={55} fontSize={18} fill="rgba(255,200,150,0.7)" textAnchor="middle">?</text>
       <text x={50} y={60} fontSize={14} fill="rgba(255,200,150,0.5)" textAnchor="middle">?</text>

@@ -107,7 +107,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     description: "Match colors and numbers. Play action cards to shake things up.",
     minPlayers: 2, maxPlayers: 4, estimatedMinutes: 30,
     tags: ["card", "classic", "action"],
-    component: "_stub",
+    component: "wildcards/WildCardsBoard",
     color: g("#dc2626", "#7c2d12"),
   },
   crazyeights: {

@@ -28,6 +28,7 @@ const GAME_COMPONENTS: Record<string, React.ComponentType<{ room: GameRoom }>> =
   seabattle: dynamic(() => import("@/components/games/battleship/BattleshipBoard")),
   war: dynamic(() => import("@/components/games/war/WarBoard")),
   blackjack: dynamic(() => import("@/components/games/blackjack/BlackjackBoard")),
+  wildcards: dynamic(() => import("@/components/games/wildcards/WildCardsBoard")),
 };
 
 function ComingSoon({ room }: { room: GameRoom }) {

@@ -123,7 +123,7 @@ export const GAME_REGISTRY: Record<GameId, GameMeta> = {
     description: "Collect sets of four by asking opponents for cards.",
     minPlayers: 2, maxPlayers: 4, estimatedMinutes: 15,
     tags: ["card", "classic"],
-    component: "_stub",
+    component: "gofish/GoFishBoard",
     color: g("#0369a1", "#082f49"),
   },
   poker: {
